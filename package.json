@@ -13,6 +13,7 @@
     "url": "https://github.com/uniyo/uniyo-redux/issues"
   },
   "dependencies": {
+    "redux": "^3.6.0",
     "redux-saga": "^0.14.5"
   },
   "homepage": "https://github.com/uniyo/uniyo-redux#readme",

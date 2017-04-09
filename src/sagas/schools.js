@@ -15,9 +15,9 @@ function* schoolsSearchAsync(action) {
         limit: 10,
       },
     })
-    yield put({ type: schoolsSearch.success, schoolsSearchResult: result.data })
+    yield put({ type: schoolsSearch.success, data: result.data })
   } catch (error) {
-    yield put({ type: schoolsSearch.error, schoolsSearchError: error.log })
+    yield put({ type: schoolsSearch.error, error })
   }
 }
 

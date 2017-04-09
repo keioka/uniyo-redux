@@ -1,4 +1,10 @@
+import Immutable from 'seamless-immutable'
 import { actionTypes } from '../actions'
+
+const initialState = Immutable({
+  data: [],
+  error: {},
+})
 
 /**
  * Schools reducer
@@ -6,35 +12,21 @@ import { actionTypes } from '../actions'
  * @param {object} [state={}]
  * @param {any} action
  */
-const schools = (state = {}, action) => {
+const schools = (state = initialState, action) => {
   switch (action.type) {
 
-    //
-    // @igorlem
-    //
-    // not sure that we need this case, but anyway it'll stay there
-    // until i realize I'm a total retard
-    //
     case actionTypes.schoolsSearch.request:
-      return {
-        schools: {
-          ...action.payload,
-        },
-      }
+      return state
 
     case actionTypes.schoolsSearch.success:
-      return {
-        schools: {
-          schoolsSearch: action.result,
-        },
-      }
+      return Immutable(state).merge({
+        data: action.data,
+      })
 
     case actionTypes.schoolsSearch.error:
-      return {
-        schools: {
-          errorData: action.error,
-        },
-      }
+      return Immutable(state).merge({
+        error: action.error,
+      })
 
     default:
       return state

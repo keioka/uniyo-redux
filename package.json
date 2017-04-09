@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -13,9 +13,13 @@
     "url": "https://github.com/uniyo/uniyo-redux/issues"
   },
   "dependencies": {
+    "axios": "^0.16.1",
     "redux": "^3.6.0",
-    "redux-saga": "^0.14.5"
+    "redux-saga": "^0.14.5",
+    "seamless-immutable": "^7.1.2"
   },
   "homepage": "https://github.com/uniyo/uniyo-redux#readme",
-  "devDependencies": {}
+  "devDependencies": {
+    "jest": "^19.0.2"
+  }
 }

@@ -1,6 +1,6 @@
 import { schoolsSearchSaga, schoolInfoSaga } from './schools'
 
-export {
+export default {
   schoolsSearchSaga,
   schoolInfoSaga,
 }

@@ -9,7 +9,7 @@ import api from '../helpers/api'
  */
 function* schoolsSearchAsync(action) {
   try {
-    const result = yield api.get('schools/search/', {
+    const result = yield api.get('schools/search', {
       params: {
         query: action.query,
         limit: 10,

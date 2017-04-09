@@ -1,3 +1,3 @@
 export default {
-  path: 'https://api.uniyo.io/v1/',
+  path: 'https://api.uniyo.io/v1',
 }

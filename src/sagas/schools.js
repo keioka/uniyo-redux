@@ -9,12 +9,17 @@ import api from '../helpers/api'
  */
 function* schoolsSearchAsync(action) {
   try {
-    const result = yield api.get('schools/search', {
-      params: {
-        query: action.query,
-        limit: 10,
-      },
-    })
+    let result
+    if (action.query) {
+      result = yield api.get('schools/search', {
+        params: {
+          query: action.query,
+          limit: action.limit,
+        },
+      })
+    } else {
+      result = { data: [] }
+    }
     yield put({ type: schoolsSearch.success, data: result.data })
   } catch (error) {
     yield put({ type: schoolsSearch.error, error })
@@ -28,10 +33,10 @@ function* schoolsSearchAsync(action) {
  */
 function* schoolInfoAsync(action) {
   try {
-    const result = 'dsfdf'
+    const result = yield api.get(`schools/${action.id}`)
     yield put({ type: schoolInfo.success, schoolInfoResult: result })
   } catch (error) {
-    yield put({ type: schoolInfo.error, schoolInfoError: error.log })
+    yield put({ type: schoolInfo.error, schoolInfoError: error })
   }
 }
 

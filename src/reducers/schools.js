@@ -4,6 +4,7 @@ import { actionTypes } from '../actions'
 const initialState = Immutable({
   data: [],
   error: {},
+  fetching: false,
 })
 
 /**
@@ -16,16 +17,20 @@ const schools = (state = initialState, action) => {
   switch (action.type) {
 
     case actionTypes.schoolsSearch.request:
-      return state
+      return Immutable(state).merge({
+        fetching: true,
+      })
 
     case actionTypes.schoolsSearch.success:
       return Immutable(state).merge({
         data: action.data,
+        fetching: false,
       })
 
     case actionTypes.schoolsSearch.error:
       return Immutable(state).merge({
         error: action.error,
+        fetching: false,
       })
 
     default:

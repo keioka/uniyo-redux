@@ -6,9 +6,10 @@ import { actionTypes } from './'
  * @param {string} query
  * @returns
  */
-export const schoolsSearch = query => ({
+export const schoolsSearch = (query, limit = 10) => ({
   type: actionTypes.schoolsSearch.request,
   query,
+  limit,
 })
 
 /**

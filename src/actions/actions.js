@@ -36,5 +36,22 @@ export const logIn = ({ username, password, schoolId }) => ({
   type: actionTypes.logIn.request,
   username,
   password,
-  schoolId
+  schoolId,
+})
+
+/**
+ * Requests userCreate by user's username, email, password, schoolid
+ *
+ * @param {string} name user's name.
+ * @param {string} email user's email.
+ * @param {string} password user's password.
+ * @param {number} schoolid user's school id.
+ * @returns
+ */
+export const userCreate = ({ name, email, password, schoolId }) => ({
+  type: actionTypes.userCreate.request,
+  name,
+  email,
+  password,
+  schoolId,
 })

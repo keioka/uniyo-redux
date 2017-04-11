@@ -7,7 +7,7 @@ const CLIENT_ID = 'qD1xzEFECX3JplYNIsmtFIb9lkdRF8XPuUR3jBR26cV0to5gnlKAYKc48PXJK
 function* logInAsync({ username, password, schoolId }) {
   try {
     const result = yield api.post('oauth/token', {
-      params: {
+      data: {
         grant_type: 'password',
         username: username,
         password: password,
@@ -22,11 +22,26 @@ function* logInAsync({ username, password, schoolId }) {
   }
 }
 
-function* tokenRefreshAsync() {
-  // WIP
+function* userCreateAsync({ name, email, password, schoolId }) {
+  try {
+    const result = yield api.post('users', {
+      data: {
+        name,
+        email,
+        password,
+        oauth_scope: 'full',
+        school_id: schoolId,
+        client_id: CLIENT_ID
+      },
+      headers: { 'Content-Type': 'application/json' }
+    })
+    yield put({ type: userCreate.success, result })
+  } catch (error) {
+    yield put({ type: userCreate.error, error })
+  }
 }
 
-function* userCreateAsync() {
+function* tokenRefreshAsync() {
   // WIP
 }
 
@@ -34,10 +49,10 @@ export function* logInSaga() {
   yield takeLatest(logIn.request, logInAsync)
 }
 
-export function* tokenRefreshSaga() {
-  // WIP
+export function* userCreateSaga() {
+  yield takeLatest(userCreate.request, userCreateAsync)
 }
 
-export function* userCreateSaga() {
+export function* tokenRefreshSaga() {
   // WIP
 }

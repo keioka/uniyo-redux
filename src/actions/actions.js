@@ -33,7 +33,7 @@ export const schoolInfo = id => ({
  * @returns
  */
 export const logIn = ({ username, password, schoolId }) => ({
-  type: actionTypes.logIn,
+  type: actionTypes.logIn.request,
   username,
   password,
   schoolId

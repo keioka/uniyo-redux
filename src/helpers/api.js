@@ -37,6 +37,7 @@ class ApiClient {
     Object.keys(methods).forEach((method) => {
       this[method] = (path, options, external = false) =>
         axios.request({
+          method,
           ...methods[method],
           ...options,
           url: formatUrl(path, external),
@@ -44,6 +45,7 @@ class ApiClient {
     })
   }
 }
+
 
 const apiClient = new ApiClient()
 

@@ -21,8 +21,15 @@ const auth = (state = initialState, action) => {
       })
 
     case actionTypes.logIn.success:
+      const { user, access_token, expires_in, refresh_token, token_type } = action.result.data
       return Immutable(state).merge({
-        currentUser: action.data,
+        token: {
+          accessToken: access_token,
+          expiresIn: expires_in,
+          refreshToken: refresh_token,
+          tokenType: token_type
+        },
+        currentUser: user,
         fetching: false,
       })
 

@@ -4,7 +4,7 @@ import { actionTypes } from './'
  * Requests an array of schools by their name query.
  *
  * @param {string} query
- * @returns
+ * @returns {object} action 
  */
 export const schoolsSearch = (query, limit = 10) => ({
   type: actionTypes.schoolsSearch.request,
@@ -16,7 +16,7 @@ export const schoolsSearch = (query, limit = 10) => ({
  * Requests the school data by its id
  *
  * @param {number} id
- * @returns
+ * @returns {object} action
  */
 export const schoolInfo = id => ({
   type: actionTypes.schoolInfo,
@@ -30,7 +30,7 @@ export const schoolInfo = id => ({
  * @param {string} username user's email.
  * @param {string} password user's password.
  * @param {number} schoolid user's school id.
- * @returns
+ * @returns {object} action
  */
 export const logIn = ({ username, password, schoolId }) => ({
   type: actionTypes.logIn.request,
@@ -46,7 +46,7 @@ export const logIn = ({ username, password, schoolId }) => ({
  * @param {string} email user's email.
  * @param {string} password user's password.
  * @param {number} schoolid user's school id.
- * @returns
+ * @returns {object} action
  */
 export const userCreate = ({ name, email, password, schoolId }) => ({
   type: actionTypes.userCreate.request,
@@ -54,4 +54,15 @@ export const userCreate = ({ name, email, password, schoolId }) => ({
   email,
   password,
   schoolId,
+})
+
+/**
+ * Requests new Tokens by refresh token
+ *
+ * @param {string} token refresh token
+ * @returns {object} action
+ */
+export const tokenRefresh = (token) => ({
+  type: actionTypes.tokenRefresh.request,
+  token,
 })

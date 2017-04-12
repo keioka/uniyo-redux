@@ -6,7 +6,8 @@ const initialState = Immutable({
   currentUser: {},
   token: {},
   isLogin: false,
-  isNewUser: false
+  isNewUser: false,
+  refreshingToken: false
 })
 
 /**
@@ -25,13 +26,13 @@ const auth = (state = initialState, action) => {
     }
 
     case actionTypes.logIn.success: {
-      const { user, access_token, expires_in, refresh_token, token_type } = action.result.data
+      const { user, accessToken, expiresIn, refreshToken, tokenType } = action.result.data
       return Immutable(state).merge({
         token: {
-          accessToken: access_token,
-          expiresIn: expires_in,
-          refreshToken: refresh_token,
-          tokenType: token_type
+          accessToken,
+          expiresIn,
+          refreshToken,
+          tokenType,
         },
         currentUser: user,
         isLogin: true,
@@ -53,13 +54,13 @@ const auth = (state = initialState, action) => {
     }
 
     case actionTypes.userCreate.success: {
-      const { user, access_token, expires_in, refresh_token, token_type } = action.result.data
+      const { user, accessToken, expiresIn, refreshToken, tokenType } = action.result.data
       return Immutable(state).merge({
         token: {
-          accessToken: access_token,
-          expiresIn: expires_in,
-          refreshToken: refresh_token,
-          tokenType: token_type
+          accessToken,
+          expiresIn,
+          refreshToken,
+          tokenType,
         },
         currentUser: user,
         isLogin: true,
@@ -72,6 +73,32 @@ const auth = (state = initialState, action) => {
       return Immutable(state).merge({
         error: action.error,
         fetching: false,
+      })
+    }
+
+    case actionTypes.tokenRefresh.request: {
+      return Immutable(state).merge({
+        refreshingToken: true
+      })
+    }
+
+    case actionTypes.tokenRefresh.success: {
+      const { accessToken, expiresIn, refreshToken, tokenType } = action.result.data
+      return Immutable(state).merge({
+        refreshingToken: false,
+        token: {
+          accessToken,
+          expiresIn,
+          refreshToken,
+          tokenType,
+        }
+      })
+    }
+
+    case actionTypes.tokenRefresh.error: {
+      return Immutable(state).merge({
+        refreshingToken: false,
+        error: action.error,
       })
     }
 

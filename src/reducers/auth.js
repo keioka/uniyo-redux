@@ -76,6 +76,12 @@ const auth = (state = initialState, action) => {
       })
     }
 
+    case actionTypes.authClearError.request: {
+      return Immutable(state).merge({
+        error: {},
+      })
+    }
+
     case actionTypes.tokenRefresh.request: {
       return Immutable(state).merge({
         refreshingToken: true
@@ -85,6 +91,7 @@ const auth = (state = initialState, action) => {
     case actionTypes.tokenRefresh.success: {
       const { accessToken, expiresIn, refreshToken, tokenType } = action.result.data
       return Immutable(state).merge({
+        isLogin: true,
         refreshingToken: false,
         token: {
           accessToken,

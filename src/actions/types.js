@@ -4,6 +4,7 @@ import actionCreator from '../helpers/actionCreator'
 
 export const logIn = actionCreator('LOG_IN')
 export const tokenRefresh = actionCreator('TOKEN_REFRESH')
+export const authClearError = actionCreator('AUTH_CLEAR_ERROR')
 
 export const schoolInfo = actionCreator('SCHOOL_INFO')
 export const schoolsSearch = actionCreator('SCHOOLS_SEARCH')
@@ -12,6 +13,7 @@ export const userCreate = actionCreator('USER_CREATE')
 export const userInfo = actionCreator('USER_INFO')
 export const userUpdate = actionCreator('USER_UPDATE')
 export const userSearch = actionCreator('USER_SEARCH')
+export const userPictureUpdate = actionCreator('USER_PICTURE_UPDATE')
 
 export const hashtagsUser = actionCreator('HASHTAGS_USER')
 export const hashtagAdd = actionCreator('HASHTAG_CREATE')

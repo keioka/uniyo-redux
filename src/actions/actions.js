@@ -4,7 +4,7 @@ import { actionTypes } from './'
  * Requests an array of schools by their name query.
  *
  * @param {string} query
- * @returns {object} action 
+ * @returns {object} action
  */
 export const schoolsSearch = (query, limit = 10) => ({
   type: actionTypes.schoolsSearch.request,
@@ -56,13 +56,53 @@ export const userCreate = ({ name, email, password, schoolId }) => ({
   schoolId,
 })
 
+export const authClearError = () => ({
+  type: actionTypes.authClearError.request
+})
+
 /**
  * Requests new Tokens by refresh token
  *
  * @param {string} token refresh token
  * @returns {object} action
  */
-export const tokenRefresh = (token) => ({
+export const tokenRefresh = token => ({
   type: actionTypes.tokenRefresh.request,
   token,
+})
+
+/**
+ * Requests new Tokens by refresh token
+ *
+ * @param {string} token refresh token
+ * @returns {object} action
+ */
+export const hashtagAdd = ({ hashtags, accessToken, tagType }) => ({
+  type: actionTypes.hashtagAdd.request,
+  hashtags,
+  accessToken,
+  tagType,
+})
+
+/**
+ * Requests new Tokens by refresh token
+ *
+ * @param {string} token refresh token
+ * @returns {object} action
+ */
+export const userPictureUpdate = params => ({
+  type: actionTypes.userPictureUpdate.request,
+  ...params,
+})
+
+
+/**
+ * Requests posts Search
+ *
+ * @param {object} params
+ * @returns {object} action
+ */
+export const postsSearch = params => ({
+  type: actionTypes.postsSearch.request,
+  ...params,
 })

@@ -2,23 +2,14 @@
   "parser": "babel-eslint",
   "extends": "airbnb",
   "ecmaFeatures": {
-    "jsx": true,
     "modules": true
   },
   "rules": {
     "func-names": ["error", "never"],
     "semi": ["error", "never"],
-    "jest/no-disabled-tests": "warn",
-    "jest/no-focused-tests": "error",
-    "jest/no-identical-title": "error"
-  },
-  "env": {
-    "jest/globals": true
   },
   "plugins": [
-    "react",
     "babel",
-    "flowtype",
-    "jest"
+    "flowtype"
   ]
 }

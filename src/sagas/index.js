@@ -1,6 +1,7 @@
 import { schoolsSearchSaga, schoolInfoSaga } from './schools'
 import { logInSaga, userCreateSaga, tokenRefreshSaga } from './auth'
 import { addUserTagsSaga, updateUserProfilePicSaga } from './profile'
+import { postsSearchSaga } from './post'
 
 export default {
   schoolsSearchSaga,
@@ -10,4 +11,5 @@ export default {
   tokenRefreshSaga,
   addUserTagsSaga,
   updateUserProfilePicSaga,
+  postsSearchSaga,
 }

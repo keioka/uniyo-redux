@@ -1,17 +1,25 @@
-export function* postsSearchAsync({ types, limit, hashtags, accessToken }) {
+import { put, takeLatest } from 'redux-saga/effects'
+import { postsSearch } from '../actions/types'
+import * as converter from '../helpers/converter'
+import api from '../helpers/api'
+
+export function* postsSearchAsync({ types, limit = 50, hashtags, accessToken }) {
   const params = {
     accessToken,
-    hashtags,
-    types,
     limit,
   }
 
-  // convert params to snake case recrusively
-  const snakeCaseParams = converter.camelToSnakeCase(params)
+  if (hashtags) {
+    params.hashtags = hashtags.join(',')
+  }
+
+  if (types) {
+    params.types = types.join(',')
+  }
 
   try {
     const result = yield api.get('posts', {
-      params: params,
+      params: converter.camelToSnakeCase(params),
     })
 
     yield put({ type: postsSearch.success, result: converter.snakeToCamelCase(result) })

@@ -5,6 +5,7 @@ import actionCreator from '../helpers/actionCreator'
 export const logIn = actionCreator('LOG_IN')
 export const tokenRefresh = actionCreator('TOKEN_REFRESH')
 export const authClearError = actionCreator('AUTH_CLEAR_ERROR')
+export const currentUser = actionCreator('CURRENT_USER')
 
 export const schoolInfo = actionCreator('SCHOOL_INFO')
 export const schoolsSearch = actionCreator('SCHOOLS_SEARCH')

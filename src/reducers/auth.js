@@ -7,7 +7,8 @@ const initialState = Immutable({
   token: {},
   isLogin: false,
   isNewUser: false,
-  refreshingToken: false
+  isUploadingPicture: false,
+  refreshingToken: false,
 })
 
 /**
@@ -98,7 +99,7 @@ const auth = (state = initialState, action) => {
           expiresIn,
           refreshToken,
           tokenType,
-        }
+        },
       })
     }
 
@@ -106,6 +107,26 @@ const auth = (state = initialState, action) => {
       return Immutable(state).merge({
         refreshingToken: false,
         error: action.error,
+      })
+    }
+
+    case actionTypes.userPictureUpdate.request: {
+      return Immutable(state).merge({
+        isUploadingPicture: true,
+      })
+    }
+
+    case actionTypes.userPictureUpdate.success: {
+      return Immutable(state).merge({
+        isUploadingPicture: false,
+        currentUser: action.result.data,
+      })
+    }
+
+
+    case actionTypes.currentUser.success: {
+      return Immutable(state).merge({
+        currentUser: action.result.data,
       })
     }
 

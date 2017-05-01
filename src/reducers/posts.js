@@ -1,9 +1,12 @@
 import Immutable from 'seamless-immutable'
+import _ from 'lodash'
 import { actionTypes } from '../actions'
+
 
 const initialState = Immutable({
   all: [],
   error: {},
+  fetching: false,
 })
 
 /**
@@ -12,17 +15,17 @@ const initialState = Immutable({
  * @param {object} [state={}]
  * @param {any} action
  */
-const post = (state = initialState, action) => {
+const posts = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.postsSearch.request: {
       return Immutable(state).merge({
-        fetching: true
+        fetching: true,
       })
     }
 
     case actionTypes.postsSearch.success: {
       return Immutable(state).merge({
-        all: [...state.all, ...action.result.data],
+        all: _.uniqBy([...state.all, ...action.result.data], data => data.id),
         fetching: false,
       })
     }
@@ -34,10 +37,27 @@ const post = (state = initialState, action) => {
       })
     }
 
+    case actionTypes.postCreate.request: {
+      return Immutable(state).merge({
+      })
+    }
+
+    case actionTypes.postCreate.success: {
+      return Immutable(state).merge({
+        all: _.uniqBy([action.result.data, ...state.all], data => data.id),
+      })
+    }
+
+    case actionTypes.postCreate.error: {
+      return Immutable(state).merge({
+        error: action.error,
+      })
+    }
+
     default: {
       return state
     }
   }
 }
 
-export default post
+export default posts

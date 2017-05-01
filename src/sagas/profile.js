@@ -42,7 +42,7 @@ function* addUserTagsAsync({ hashtags, tagType, accessToken }) {
   }
 
   // send request by each tag
-  yield hashtags.map(tag => call(addHashTagRequest, tag, tagType, accessToken))
+  yield hashtags.map(tag => fork(addHashTagRequest, tag, tagType, accessToken))
 }
 
 /**

@@ -1,19 +1,18 @@
 import { put, takeLatest } from 'redux-saga/effects'
-import { logIn, tokenRefresh, userCreate } from '../actions/types'
+import { logIn, tokenRefresh, userCreate, currentUser } from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
 
 const CLIENT_ID = 'qD1xzEFECX3JplYNIsmtFIb9lkdRF8XPuUR3jBR26cV0to5gnlKAYKc48PXJKpD'
 
-function* logInAsync({ username, password, schoolId }) {
-
+export function* logInAsync({ username, password, schoolId }) {
   const params = {
     grant_type: 'password',
-    username: username,
-    password: password,
+    username,
+    password,
     scope: 'full',
     school_id: schoolId,
-    client_id: CLIENT_ID
+    client_id: CLIENT_ID,
   }
 
   const body = converter.toFormUrlEncoded(params)
@@ -37,9 +36,9 @@ function* userCreateAsync({ name, email, password, schoolId }) {
         password,
         oauth_scope: 'full',
         school_id: schoolId,
-        client_id: CLIENT_ID
+        client_id: CLIENT_ID,
       },
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     })
     yield put({ type: userCreate.success, result: converter.snakeToCamelCase(result) })
   } catch (error) {
@@ -49,18 +48,35 @@ function* userCreateAsync({ name, email, password, schoolId }) {
 
 function* tokenRefreshAsync({ token }) {
   const params = {
-    "grant_type": "refresh_token",
-    "refresh_token": token
+    grant_type: 'refresh_token',
+    refresh_token: token,
   }
   const body = converter.toFormUrlEncoded(params)
 
   try {
     const result = yield api.post('oauth/token', {
-      data: body
+      data: body,
     })
     yield put({ type: tokenRefresh.success, result: converter.snakeToCamelCase(result) })
   } catch (error) {
     yield put({ type: tokenRefresh.error, error })
+  }
+}
+
+function* currentUserAsync({ userId, accessToken }) {
+  const params = {
+    accessToken,
+    userId,
+  }
+
+  try {
+    const result = yield api.get(`users/${userId}`, {
+      params: converter.camelToSnakeCase(params),
+    })
+
+    yield put({ type: currentUser.success, result: converter.snakeToCamelCase(result) })
+  } catch (error) {
+    yield put({ type: currentUser.error, error })
   }
 }
 
@@ -74,4 +90,8 @@ export function* userCreateSaga() {
 
 export function* tokenRefreshSaga() {
   yield takeLatest(tokenRefresh.request, tokenRefreshAsync)
+}
+
+export function* currentUserSaga() {
+  yield takeLatest(currentUser.request, currentUserAsync)
 }

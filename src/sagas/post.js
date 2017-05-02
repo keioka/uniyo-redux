@@ -2,6 +2,7 @@ import { put, takeLatest } from 'redux-saga/effects'
 import { postsSearch, postCreate } from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
+import FormData from 'form-data'
 
 export function* postsSearchAsync({ types, limit = 50, hashtags, accessToken, lastPostId
  }) {
@@ -44,14 +45,23 @@ export function* postCreateAsync({ text, accessToken, postType = 'POST', rating 
   }
 
   if (rating) params['rating'] = rating
+
   if (classNote) {
     params['classNote'] = classNote
     params['classNoteContentType'] = classNote.type
   }
 
+  const snakeCaseParams = converter.camelToSnakeCase(params)
+
+  // generate form data
+  const body = new FormData()
+
+  // append all snake case params to body
+  Object.keys(snakeCaseParams).forEach(key => body.append(key, snakeCaseParams[key]))
+
   try {
     const result = yield api.post('posts', {
-      data: converter.toFormUrlEncoded(params),
+      data: body,
     })
 
     yield put({ type: postCreate.success, result: converter.snakeToCamelCase(result) })

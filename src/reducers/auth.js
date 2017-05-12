@@ -123,10 +123,35 @@ const auth = (state = initialState, action) => {
       })
     }
 
-
     case actionTypes.currentUser.success: {
       return Immutable(state).merge({
         currentUser: action.result.data,
+      })
+    }
+
+    case actionTypes.hashtagAdd.success: {
+      return Immutable(state).merge({
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          hashtags: [...state.currentUser.hashtags, action.result.data],
+        }
+      })
+    }
+
+    case actionTypes.hashtagDelete.success: {
+      return Immutable(state).merge({
+        currentUser: {
+          hashtags: action.result.data,
+        }
+      })
+    }
+
+    case actionTypes.hashtagsUser.success: {
+      return Immutable(state).merge({
+        currentUser: {
+          hashtags: action.result.data,
+        }
       })
     }
 

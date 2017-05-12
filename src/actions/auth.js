@@ -80,6 +80,30 @@ export const hashtagAdd = ({ hashtags, accessToken, tagType }) => ({
 })
 
 /**
+ * Requests hashtags user
+ *
+ * @param {string} accessToken
+ * @returns {object} action
+ */
+
+export const hashtagsUser = params => ({
+  type: actionTypes.hashtagsUser.request,
+  ...params,
+})
+
+/**
+ * Requests hashtags delete
+ *
+ * @param {object} params
+ * @returns {object} action
+ */
+
+export const hashtagDelete = params => ({
+  type: actionTypes.hashtagDelete.request,
+  ...params,
+})
+
+/**
  * Requests new Tokens by refresh token
  *
  * @param {string} token refresh token

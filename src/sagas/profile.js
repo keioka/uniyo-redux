@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
+import { call, put, takeLatest, fork } from 'redux-saga/effects'
 import * as converter from '../helpers/converter'
 import { hashtagAdd, userPictureUpdate } from '../actions/types'
 import api from '../helpers/api'
@@ -11,7 +11,7 @@ import FormData from 'form-data'
  *  @param {string} accessToken
  */
 
- function* addHashTagRequest(hashtag, tagType, accessToken) {
+ export function* addHashTagRequest(hashtag, tagType, accessToken) {
    const params = {
      hashtag,
      type: tagType,
@@ -43,6 +43,41 @@ function* addUserTagsAsync({ hashtags, tagType, accessToken }) {
 
   // send request by each tag
   yield hashtags.map(tag => fork(addHashTagRequest, tag, tagType, accessToken))
+}
+
+
+function* hashtagDeleteAsync({ accessToken, hashtag, hashtag_type }) {
+  const params = {
+    accessToken,
+    hashtag,
+    hashtag_type,
+  }
+
+  try {
+    const result = yield api.delete('users/me/hashtags', {
+      params: converter.camelToSnakeCase(params),
+    })
+
+    yield put({ type: hashtagDelete.success, result: converter.snakeToCamelCase(result) })
+  } catch (error) {
+    yield put({ type: hashtagDelete.error, result: converter.snakeToCamelCase(error) })
+  }
+}
+
+function* hashtagsUserAsync({ accessToken }) {
+  const params = {
+    accessToken,
+  }
+
+  try {
+    const result = yield api.get('users/me/hashtags', {
+      params: converter.camelToSnakeCase(params),
+    })
+
+    yield put({ type: hashtagsUser.success, result: converter.snakeToCamelCase(result) })
+  } catch (error) {
+    yield put({ type: hashtagsUser.error, result: converter.snakeToCamelCase(error) })
+  }
 }
 
 /**
@@ -89,6 +124,14 @@ function* updateUserProfilePicAsync({ imageFile, cropInfo, accessToken }) {
 
 export function* addUserTagsSaga() {
   yield takeLatest(hashtagAdd.request, addUserTagsAsync)
+}
+
+export function* hashtagDeleteSaga() {
+  yield takeLatest(hashtagDelete.request, hashtagDeleteAsync)
+}
+
+export function* hashtagsUserSaga() {
+  yield takeLatest(hashtagsUser.request, hashtagsUserAsync)
 }
 
 export function* updateUserProfilePicSaga() {

@@ -1,5 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects'
-import { postsSearch, postCreate } from '../actions/types'
+import { postInfo, postsSearch, postCreate, answerSearch, answerCreate } from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
 import FormData from 'form-data'
@@ -33,6 +33,22 @@ export function* postsSearchAsync({ types, limit = 50, hashtags, accessToken, la
     }
   } catch (error) {
     yield put({ type: postsSearch.error, error })
+  }
+}
+
+export function* postInfoAsync({ accessToken, postId }) {
+  const params = {
+    accessToken,
+  }
+
+  try {
+    const result = yield api.get(`posts/${postId}`, {
+      params: converter.camelToSnakeCase(params),
+    })
+
+    yield put({ type: postInfo.success, result: converter.snakeToCamelCase(result) })
+  } catch (error) {
+    yield put({ type: postInfo.error, error })
   }
 }
 
@@ -70,11 +86,63 @@ export function* postCreateAsync({ text, accessToken, postType = 'POST', rating 
   }
 }
 
+
+export function* answerSearchAsync({ limit = 50, accessToken, lastAnswerId, questionId }) {
+
+  const params = {
+    limit,
+    accessToken,
+    lastAnswerId,
+  }
+
+  try {
+    const result = yield api.get(`questions/${questionId}/answers`, {
+      params: converter.camelToSnakeCase(params),
+    })
+
+    result.data.forEach(answer => { answer.questionId = questionId })
+
+    yield put({ type: answerSearch.success, result: converter.snakeToCamelCase(result) })
+  } catch (error) {
+    yield put({ type: answerSearch.error, error })
+  }
+}
+
+export function* answerCreateAsync({ accessToken, questionId, text }) {
+
+  const params = {
+    accessToken,
+    text,
+  }
+
+  try {
+    const result = yield api.post(`questions/${questionId}/answers`, {
+      data: converter.toFormUrlEncoded(params),
+    })
+    result.data.questionId = questionId
+    yield put({ type: answerCreate.success, result: converter.snakeToCamelCase(result) })
+  } catch (error) {
+    yield put({ type: answerCreate.error, error })
+  }
+}
+
+
+export function* postInfoSaga() {
+  yield takeLatest(postInfo.request, postInfoAsync)
+}
+
 export function* postsSearchSaga() {
   yield takeLatest(postsSearch.request, postsSearchAsync)
 }
 
-
 export function* postCreateSaga() {
   yield takeLatest(postCreate.request, postCreateAsync)
+}
+
+export function* answerCreateSaga() {
+  yield takeLatest(answerCreate.request, answerCreateAsync)
+}
+
+export function* answerSearchSaga() {
+  yield takeLatest(answerSearch.request, answerSearchAsync)
 }

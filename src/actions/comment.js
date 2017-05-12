@@ -14,6 +14,20 @@ export const commentsSearch = params => ({
   ...params,
 })
 
+/**
+ * Requests Comments Fetch
+ *
+ * @param {object} params
+ *    @param {number} postId
+ *    @param {string} accessToken
+ *
+ * @returns {object} action
+ */
+
+export const commentFetch = params => ({
+  type: actionTypes.commentFetch.request,
+  ...params,
+})
 
 /**
  * Requests Comments Create

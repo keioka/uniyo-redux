@@ -20,7 +20,6 @@
     "json-style-converter": "^1.0.2",
     "redux": "^3.6.0",
     "redux-saga": "^0.14.5",
-    "rx": "^4.1.0",
     "seamless-immutable": "^7.1.2"
   },
   "homepage": "https://github.com/uniyo/uniyo-redux#readme",

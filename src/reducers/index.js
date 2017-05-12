@@ -8,6 +8,7 @@ import channels from './channels'
 import messages from './messages'
 import hashtags from './hashtags'
 import answers from './answers'
+import notifications from './notifications'
 
 export default combineReducers({
   schools,
@@ -19,5 +20,6 @@ export default combineReducers({
   messages,
   hashtags,
   answers,
+  notifications,
   // more later
 })

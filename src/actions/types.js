@@ -18,6 +18,7 @@ export const userPictureUpdate = actionCreator('USER_PICTURE_UPDATE')
 
 export const hashtagsUser = actionCreator('HASHTAGS_USER')
 export const hashtagAdd = actionCreator('HASHTAG_CREATE')
+export const hashtagTrendingSearch = actionCreator('HASHTAG_TRENDING')
 export const hashtagDelete = actionCreator('HASHTAG_DELETE')
 
 export const postInfo = actionCreator('POST_SINGLE')
@@ -27,7 +28,18 @@ export const postDelete = actionCreator('POST_DELETE')
 export const postLike = actionCreator('POST_LIKE')
 export const postUnlike = actionCreator('POST_UNLIKE')
 
+export const answerSearch = actionCreator('ANSWER_SEARCH')
+export const answerCreate = actionCreator('ANSWER_CREATE')
+
 export const commentCreate = actionCreator('COMMENT_CREATE')
+export const commentFetch = actionCreator('COMMENT_FETCH')
 export const commentsSearch = actionCreator('COMMENTS_SEARCH')
 export const commentLike = actionCreator('COMMENT_LIKE')
 export const commentUnlike = actionCreator('COMMENT_UNLIKE')
+
+export const channelSearch = actionCreator('CHANNEL_SEARCH')
+export const channelCreate = actionCreator('CHANNEL_CREATE')
+
+export const messageFetch = actionCreator('MESSAGE_FETCH')
+export const messageSearch = actionCreator('MESSAGE_SEARCH')
+export const messageCreate = actionCreator('MESSAGE_CREATE')

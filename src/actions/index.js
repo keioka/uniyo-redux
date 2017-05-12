@@ -9,6 +9,7 @@ import * as messageActions from './message'
 import * as channelActions from './channel'
 import * as hashtagActions from './hashtag'
 import * as answerActions from './answer'
+import * as notificationActions from './notification'
 
 export default {
   ...authActions,
@@ -20,6 +21,7 @@ export default {
   ...messageActions,
   ...hashtagActions,
   ...answerActions,
+  ...notificationActions,
 }
 
 export { actionTypes }

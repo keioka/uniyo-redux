@@ -7,6 +7,7 @@ import { userInfoSaga, userInfoAsync, userSearchSaga } from './user'
 import { messageSearchSaga, messageCreateSaga } from './message'
 import { channelSearchSaga, channelCreateSaga } from './channel'
 import { hashtagTrendingSearchSaga } from './hashtag'
+import { notificationSearchSaga, notificationReadMarkSaga } from './notification'
 
 export default {
   // school search
@@ -49,4 +50,8 @@ export default {
   // channel
   channelSearchSaga,
   channelCreateSaga,
+
+  // notification
+  notificationSearchSaga,
+  notificationReadMarkSaga,
 }

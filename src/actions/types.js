@@ -43,3 +43,7 @@ export const channelCreate = actionCreator('CHANNEL_CREATE')
 export const messageFetch = actionCreator('MESSAGE_FETCH')
 export const messageSearch = actionCreator('MESSAGE_SEARCH')
 export const messageCreate = actionCreator('MESSAGE_CREATE')
+
+export const notificationFetch = actionCreator('NOTIFICATION_FETCH')
+export const notificationSearch = actionCreator('NOTIFICATION_SEARCH')
+export const notificationReadMark = actionCreator('NOTIFICATION_READ_MARK')

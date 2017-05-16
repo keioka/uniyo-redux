@@ -45,6 +45,17 @@ export const currentUser = params => ({
   ...params,
 })
 
+/**
+ * Requests current user info by user id * if endpoint is ready, get rid of user id
+ *
+ * @param {object} params
+ *    @param {string} accessToken
+ * @returns {object} action
+ */
+export const currentUserDonuts = params => ({
+  type: actionTypes.currentUserDonuts.request,
+  ...params,
+})
 
 /**
  * Requests clearing error message

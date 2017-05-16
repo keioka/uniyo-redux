@@ -1,5 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects'
-import { commentsSearch, commentCreate } from '../actions/types'
+import { commentsSearch, commentGiveDonuts, commentCreate } from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
 
@@ -21,6 +21,22 @@ export function* commentsSearchAsync({ postId, accessToken }) {
   }
 }
 
+export function* commentGiveDonutsAsync({ accessToken, amount, commentId }) {
+  const params = {
+    accessToken,
+    amount
+  }
+
+  try {
+    const result = yield api.post(`comments/${commentId}/donuts`, {
+      params: converter.camelToSnakeCase(params),
+    })
+
+    yield put({ type: commentGiveDonuts.success, result: converter.snakeToCamelCase(result) })
+  } catch (error) {
+    yield put({ type: commentGiveDonuts.error, error })
+  }
+}
 
 export function* commentCreateAsync({ text, accessToken, postId }) {
   const params = {
@@ -44,6 +60,10 @@ export function* commentCreateAsync({ text, accessToken, postId }) {
 
 export function* commentsSearchSaga() {
   yield takeLatest(commentsSearch.request, commentsSearchAsync)
+}
+
+export function* commentGiveDonutsSaga() {
+  yield takeLatest(commentGiveDonuts.request, commentGiveDonutsAsync)
 }
 
 export function* commentCreateSaga() {

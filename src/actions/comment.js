@@ -15,6 +15,22 @@ export const commentsSearch = params => ({
 })
 
 /**
+ * Requests Comments Give Donuts
+ *
+ * @param {object} params
+ *    @param {number} commentId
+ *    @param {string} accessToken
+ *    @param {number} number
+ *
+ * @returns {object} action
+ */
+
+export const commentGiveDonuts = params => ({
+  type: actionTypes.commentGiveDonuts.request,
+  ...params,
+})
+
+/**
  * Requests Comments Fetch
  *
  * @param {object} params

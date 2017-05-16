@@ -26,6 +26,22 @@ export const postsSearch = params => ({
 })
 
 /**
+ * Requests Post Give Donuts
+ *
+ * @param {object} params
+ *    @param {number} postId
+ *    @param {string} accessToken
+ *    @param {number} number
+ *
+ * @returns {object} action
+ */
+
+export const postGiveDonuts = params => ({
+  type: actionTypes.postGiveDonuts.request,
+  ...params,
+})
+
+/**
  * Requests posts create
  *
  * @param {object} params

@@ -155,6 +155,30 @@ const auth = (state = initialState, action) => {
       })
     }
 
+    case actionTypes.userReceivedDonutsFetch.success: {
+      const { amount } = action.result.data
+
+      return Immutable(state).merge({
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          receivedDonutsCount: state.currentUser.receivedDonutsCount + amount,
+        }
+      })
+    }
+
+    case actionTypes.userSpentDonutsFetch.success: {
+      const { amount } = action.result.data
+
+      return Immutable(state).merge({
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          availableDonutsCount: state.currentUser.availableDonutsCount - amount,
+        }
+      })
+    }
+
     default: {
       return state
     }

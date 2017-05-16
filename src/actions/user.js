@@ -9,3 +9,8 @@ export const userSearch = params => ({
   type: actionTypes.userSearch.request,
   ...params,
 })
+
+export const userGiveDonuts = params => ({
+  type: actionTypes.userGiveDonuts.request,
+  ...params,
+})

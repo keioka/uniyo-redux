@@ -1,5 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects'
-import { logIn, tokenRefresh, userCreate, currentUser } from '../actions/types'
+import { logIn, tokenRefresh, userCreate, currentUser, currentUserDonuts } from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
 
@@ -80,6 +80,22 @@ function* currentUserAsync({ userId, accessToken }) {
   }
 }
 
+function* currentUserDonutsAsync({ accessToken }) {
+  const params = {
+    accessToken,
+  }
+
+  try {
+    const result = yield api.get(`users/me/donuts`, {
+      params: converter.camelToSnakeCase(params),
+    })
+
+    yield put({ type: currentUserDonuts.success, result: converter.snakeToCamelCase(result) })
+  } catch (error) {
+    yield put({ type: currentUserDonuts.error, error })
+  }
+}
+
 export function* logInSaga() {
   yield takeLatest(logIn.request, logInAsync)
 }
@@ -94,4 +110,8 @@ export function* tokenRefreshSaga() {
 
 export function* currentUserSaga() {
   yield takeLatest(currentUser.request, currentUserAsync)
+}
+
+export function* currentUserDonutsSaga() {
+  yield takeLatest(currentUserDonuts.request, currentUserDonutsAsync)
 }

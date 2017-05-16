@@ -1,5 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects'
-import { postInfo, postsSearch, postCreate, answerSearch, answerCreate } from '../actions/types'
+import { postInfo, postsSearch, postGiveDonuts, postCreate, answerSearch, answerCreate } from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
 import FormData from 'form-data'
@@ -49,6 +49,24 @@ export function* postInfoAsync({ accessToken, postId }) {
     yield put({ type: postInfo.success, result: converter.snakeToCamelCase(result) })
   } catch (error) {
     yield put({ type: postInfo.error, error })
+  }
+}
+
+
+export function* postGiveDonutsAsync({ accessToken, amount, postId }) {
+  const params = {
+    accessToken,
+    amount
+  }
+
+  try {
+    const result = yield api.post(`posts/${postId}/donuts`, {
+      params: converter.camelToSnakeCase(params),
+    })
+
+    yield put({ type: postGiveDonuts.success, result: converter.snakeToCamelCase(result) })
+  } catch (error) {
+    yield put({ type: postGiveDonuts.error, error })
   }
 }
 
@@ -137,6 +155,10 @@ export function* postsSearchSaga() {
 
 export function* postCreateSaga() {
   yield takeLatest(postCreate.request, postCreateAsync)
+}
+
+export function* postGiveDonutsSaga() {
+  yield takeLatest(postGiveDonuts.request, postGiveDonutsAsync)
 }
 
 export function* answerCreateSaga() {

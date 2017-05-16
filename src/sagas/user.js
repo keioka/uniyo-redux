@@ -1,5 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects'
-import { userInfo, userSearch } from '../actions/types'
+import { userInfo, userSearch, userGiveDonuts } from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
 
@@ -20,10 +20,6 @@ export function* userInfoAsync({ userId, accessToken }) {
   }
 }
 
-export function* userInfoSaga() {
-  yield takeLatest(userInfo.request, userInfoAsync)
-}
-
 export function* userSearchAsync({ query, accessToken }) {
   const params = {
     query,
@@ -41,6 +37,33 @@ export function* userSearchAsync({ query, accessToken }) {
   }
 }
 
+export function* userGiveDonutsAsync({ amount, accessToken, userId }) {
+  const params = {
+    accessToken,
+    amount,
+  }
+
+  try {
+    const result = yield api.post(`users/${userId}/donuts`, {
+      params: converter.camelToSnakeCase(params),
+    })
+
+    yield put({ type: userGiveDonuts.success, result: converter.snakeToCamelCase(result) })
+    return converter.snakeToCamelCase(result.data)
+  } catch (error) {
+    yield put({ type: userGiveDonuts.error, error })
+  }
+}
+
+export function* userInfoSaga() {
+  yield takeLatest(userInfo.request, userInfoAsync)
+}
+
 export function* userSearchSaga() {
   yield takeLatest(userSearch.request, userSearchAsync)
+}
+
+
+export function* userGiveDonutsSaga() {
+  yield takeLatest(userGiveDonuts.request, userGiveDonutsAsync)
 }

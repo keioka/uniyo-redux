@@ -30,8 +30,10 @@ export const postInfo = actionCreator('POST_SINGLE')
 export const postsSearch = actionCreator('POSTS_SEARCH')
 export const postCreate = actionCreator('POST_CREATE')
 export const postDelete = actionCreator('POST_DELETE')
-export const postGiveDonuts = actionCreator('POST_GIVE_DONUTS')
+export const postsTrendingSearch = actionCreator('POSTS_TRENDING_SEARCH')
+export const postsRelevantSearch = actionCreator('POSTS_RELEVANT_SEARCH')
 
+export const postGiveDonuts = actionCreator('POST_GIVE_DONUTS')
 export const postDonutsCountFetch = actionCreator('POST_DONUTS_COUNT_FETCH')
 
 export const answerSearch = actionCreator('ANSWER_SEARCH')

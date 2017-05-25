@@ -1,5 +1,14 @@
-import { put, takeLatest } from 'redux-saga/effects'
-import { postInfo, postsSearch, postGiveDonuts, postCreate, answerSearch, answerCreate } from '../actions/types'
+import { put, takeLatest, takeEvery } from 'redux-saga/effects'
+import {
+  postInfo,
+  postsSearch,
+  postGiveDonuts,
+  postCreate,
+  answerSearch,
+  answerCreate,
+  postsTrendingSearch,
+  postsRelevantSearch,
+} from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
 import FormData from 'form-data'
@@ -73,7 +82,7 @@ export function* postGiveDonutsAsync({ accessToken, amount, postId }) {
 export function* postCreateAsync({ text, accessToken, postType = 'POST', rating = null, classNote = null }) {
 
   const params = {
-    postType,
+    type: postType,
     accessToken,
     text
   }
@@ -104,6 +113,46 @@ export function* postCreateAsync({ text, accessToken, postType = 'POST', rating 
   }
 }
 
+export function* postsTrendingSearchAsync({ accessToken }) {
+
+  const params = {
+    accessToken
+  }
+
+  try {
+    const result = yield api.get(`posts/trending`, {
+      params: converter.camelToSnakeCase(params),
+    })
+
+    yield put({ type: postsTrendingSearch.success, result: converter.snakeToCamelCase(result) })
+  } catch (error) {
+    yield put({ type: postsTrendingSearch.error, error })
+  }
+}
+
+export function* postsRelevantSearchAsync({ accessToken, limit = 10, types = null }) {
+
+  const params = {
+    accessToken,
+    limit,
+    types,
+  }
+
+  try {
+    const result = yield api.get(`posts/relevant`, {
+      params: converter.camelToSnakeCase(params),
+    })
+
+    yield put({ type: postsRelevantSearch.success, result: converter.snakeToCamelCase(result) })
+  } catch (error) {
+    yield put({ type: postsRelevantSearch.error, error })
+  }
+}
+
+
+/*
+  Answer
+*/
 
 export function* answerSearchAsync({ limit = 50, accessToken, lastAnswerId, questionId }) {
 
@@ -157,8 +206,16 @@ export function* postCreateSaga() {
   yield takeLatest(postCreate.request, postCreateAsync)
 }
 
+export function* postsTrendingSearchSaga() {
+  yield takeLatest(postsTrendingSearch.request, postsTrendingSearchAsync)
+}
+
+export function* postsRelevantSearchSaga() {
+  yield takeLatest(postsRelevantSearch.request, postsRelevantSearchAsync)
+}
+
 export function* postGiveDonutsSaga() {
-  yield takeLatest(postGiveDonuts.request, postGiveDonutsAsync)
+  yield takeEvery(postGiveDonuts.request, postGiveDonutsAsync)
 }
 
 export function* answerCreateSaga() {

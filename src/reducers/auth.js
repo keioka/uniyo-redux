@@ -3,7 +3,9 @@ import { actionTypes } from '../actions'
 
 const initialState = Immutable({
   fetching: false,
-  currentUser: {},
+  currentUser: {
+    donutsHistory: [],
+  },
   token: {},
   isLogin: false,
   isNewUser: false,
@@ -35,7 +37,10 @@ const auth = (state = initialState, action) => {
           refreshToken,
           tokenType,
         },
-        currentUser: user,
+        currentUser: {
+          ...user,
+          donutsHistory: state.currentUser.donutsHistory,
+        },
         isLogin: true,
         fetching: false,
       })
@@ -63,7 +68,10 @@ const auth = (state = initialState, action) => {
           refreshToken,
           tokenType,
         },
-        currentUser: user,
+        currentUser: {
+          ...user,
+          donutsHistory: state.currentUser.donutsHistory,
+        },
         isLogin: true,
         isNewUser: true,
         fetching: false,
@@ -125,7 +133,10 @@ const auth = (state = initialState, action) => {
 
     case actionTypes.currentUser.success: {
       return Immutable(state).merge({
-        currentUser: action.result.data,
+        currentUser: {
+          ...action.result.data,
+          donutsHistory: state.currentUser.donutsHistory,
+        },
       })
     }
 
@@ -140,9 +151,16 @@ const auth = (state = initialState, action) => {
     }
 
     case actionTypes.hashtagDelete.success: {
+      const hashtags = [...state.currentUser.hashtags]
+      const index = hashtags.findIndex(hashtag => hashtag.hashtag == action.result.data.hashtag)
+      if (index > 0) {
+        hashtags.splice(index, 1)
+      }
       return Immutable(state).merge({
+        ...state,
         currentUser: {
-          hashtags: action.result.data,
+          ...state.currentUser,
+          hashtags: [...hashtags],
         }
       })
     }
@@ -177,6 +195,25 @@ const auth = (state = initialState, action) => {
           availableDonutsCount: state.currentUser.availableDonutsCount - amount,
         }
       })
+    }
+
+    case actionTypes.currentUserDonuts.success: {
+      const { data } = action.result
+      return Immutable(state).merge({
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          donutsHistory: [...state.currentUser.donutsHistory, ...data],
+        },
+      })
+    }
+
+    case actionTypes.currentUserDonuts.request: {
+
+    }
+
+    case actionTypes.currentUserDonuts.error: {
+
     }
 
     default: {

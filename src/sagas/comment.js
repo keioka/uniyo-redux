@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects'
+import { put, takeLatest, takeEvery } from 'redux-saga/effects'
 import { commentsSearch, commentGiveDonuts, commentCreate } from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
@@ -24,7 +24,7 @@ export function* commentsSearchAsync({ postId, accessToken }) {
 export function* commentGiveDonutsAsync({ accessToken, amount, commentId }) {
   const params = {
     accessToken,
-    amount
+    amount,
   }
 
   try {
@@ -63,7 +63,7 @@ export function* commentsSearchSaga() {
 }
 
 export function* commentGiveDonutsSaga() {
-  yield takeLatest(commentGiveDonuts.request, commentGiveDonutsAsync)
+  yield takeEvery(commentGiveDonuts.request, commentGiveDonutsAsync)
 }
 
 export function* commentCreateSaga() {

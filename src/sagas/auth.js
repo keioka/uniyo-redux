@@ -96,6 +96,41 @@ function* currentUserDonutsAsync({ accessToken }) {
   }
 }
 
+
+function* addDevice({ accessToken, endpoint, authSecret, p256dhKey }) {
+  const params = {
+    deviceId,
+    deviceType,
+    endpoint,
+    authSecret,
+    p256dhKey,
+    accessToken
+  }
+
+  const deviceTypeMapping = {
+    'Chrome': 'BROWSER_CHROME',
+    'Chromium': 'BROWSER_CHROME',
+    'Edge': 'BROWSER_EDGE',
+    'Firefox': 'BROWSER_FIREFOX',
+    'Safari': 'BROWSER_SAFARI'
+  }
+
+  const browserName = uaParser.getBrowser().name
+  const deviceType = deviceTypeMapping[browserName]
+   ? deviceTypeMapping[browserName] : 'BROWSER_OTHER'
+
+  const body = converter.toFormUrlEncoded(params)
+
+  try {
+    const result = yield api.post('oauth/token', {
+      data: body,
+    })
+    yield put({ type: tokenRefresh.success, result: converter.snakeToCamelCase(result) })
+  } catch (error) {
+    yield put({ type: tokenRefresh.error, error })
+  }
+}
+
 export function* logInSaga() {
   yield takeLatest(logIn.request, logInAsync)
 }

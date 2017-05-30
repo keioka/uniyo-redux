@@ -66,7 +66,6 @@ const notifications = (state = initialState, action) => {
         }
       })
 
-      console.log('notificationReadMark.success', newNotifications)
       return Immutable(state).merge({
         all: newNotifications
       })

@@ -33,7 +33,7 @@ export function* channelCreateAsync({
     accessToken,
     isPrivate,
     users,
-    channel_type,
+    type: channel_type,
   }
 
   const snakeCaseParams = converter.toFormUrlEncoded(params)

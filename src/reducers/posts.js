@@ -1,5 +1,6 @@
 import Immutable from 'seamless-immutable'
 import _ from 'lodash'
+import moment from 'moment'
 import { actionTypes } from '../actions'
 
 
@@ -31,8 +32,10 @@ const posts = (state = initialState, action) => {
     }
 
     case actionTypes.postInfo.success: {
+      const newPosts = _.uniqBy(Immutable.asMutable([...state.all, action.result.data], { deep: true }), data => data.id)
+      newPosts.sort((a, b) => moment.utc(b.createdAt).diff(moment.utc(a.createdAt)))
       return Immutable(state).merge({
-        all: _.uniqBy([action.result.data, ...state.all], data => data.id),
+        all: newPosts,
         fetching: false,
       })
     }
@@ -55,8 +58,10 @@ const posts = (state = initialState, action) => {
     }
 
     case actionTypes.postsSearch.success: {
+      const newPosts = _.uniqBy(Immutable.asMutable([...state.all, ...action.result.data], { deep: true }), data => data.id)
+      newPosts.sort((a, b) => moment.utc(b.createdAt).diff(moment.utc(a.createdAt)))
       return Immutable(state).merge({
-        all: _.uniqBy([...state.all, ...action.result.data], data => data.id),
+        all: newPosts,
         fetching: false,
       })
     }
@@ -126,8 +131,10 @@ const posts = (state = initialState, action) => {
     }
 
     case actionTypes.postCreate.success: {
+      const newPosts = _.uniqBy(Immutable.asMutable([...state.all, action.result.data], { deep: true }), data => data.id)
+      newPosts.sort((a, b) => moment.utc(b.createdAt).diff(moment.utc(a.createdAt)))
       return Immutable(state).merge({
-        all: _.uniqBy([action.result.data, ...state.all], data => data.id),
+        all: newPosts,
       })
     }
 
@@ -142,7 +149,6 @@ const posts = (state = initialState, action) => {
     */
 
     case actionTypes.postDonutsCountFetch.success: {
-      console.log('postDonutsCountFetch')
       const { postId, amount } = action.result.data
 
       const newPosts = Immutable.asMutable([ ...state.all ], { deep: true })

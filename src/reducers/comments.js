@@ -61,6 +61,22 @@ const comments = (state = initialState, action) => {
       })
     }
 
+    case actionTypes.commentReceivedDonutsFetch.success: {
+      const { commentId, amount } = action.result.data
+
+      const newComments = Immutable.asMutable([ ...state.all ], { deep: true })
+
+      newComments.forEach(comment => {
+        if (comment.id === commentId) {
+          comment.donutsCount += amount
+        }
+      })
+
+      return Immutable(state).merge({
+        all: newComments,
+      })
+    }
+
     default: {
       return state
     }

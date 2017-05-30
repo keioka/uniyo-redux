@@ -124,3 +124,14 @@ export const userPictureUpdate = params => ({
   type: actionTypes.userPictureUpdate.request,
   ...params,
 })
+
+/**
+ * Requests new Tokens by refresh token
+ *
+ * @param {string} token refresh token
+ * @returns {object} action
+ */
+export const addDevice = params => ({
+  type: actionTypes.userPictureUpdate.request,
+  ...params,
+})

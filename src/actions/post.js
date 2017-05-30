@@ -52,3 +52,27 @@ export const postCreate = params => ({
   type: actionTypes.postCreate.request,
   ...params,
 })
+
+/**
+ * Requests posts relevant
+ *
+ * @param {object} params
+ * @returns {object} action
+ */
+
+export const postsRelevantSearch = params => ({
+  type: actionTypes.postsRelevantSearch.request,
+  ...params,
+})
+
+/**
+ * Requests posts trending
+ *
+ * @param {object} params
+ * @returns {object} action
+ */
+
+export const postsTrendingSearch = params => ({
+  type: actionTypes.postsTrendingSearch.request,
+  ...params,
+})

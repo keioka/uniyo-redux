@@ -1,6 +1,6 @@
 import { call, put, takeLatest, fork } from 'redux-saga/effects'
 import * as converter from '../helpers/converter'
-import { hashtagAdd, userPictureUpdate } from '../actions/types'
+import { hashtagAdd, hashtagDelete, userPictureUpdate } from '../actions/types'
 import api from '../helpers/api'
 import FormData from 'form-data'
 
@@ -46,11 +46,11 @@ function* addUserTagsAsync({ hashtags, tagType, accessToken }) {
 }
 
 
-function* hashtagDeleteAsync({ accessToken, hashtag, hashtag_type }) {
+function* hashtagDeleteAsync({ accessToken, hashtag, hashtagType }) {
   const params = {
     accessToken,
     hashtag,
-    hashtag_type,
+    type: hashtagType,
   }
 
   try {
@@ -58,7 +58,7 @@ function* hashtagDeleteAsync({ accessToken, hashtag, hashtag_type }) {
       params: converter.camelToSnakeCase(params),
     })
 
-    yield put({ type: hashtagDelete.success, result: converter.snakeToCamelCase(result) })
+    yield put({ type: hashtagDelete.success, result: converter.snakeToCamelCase({ data: { hashtag } }) })
   } catch (error) {
     yield put({ type: hashtagDelete.error, result: converter.snakeToCamelCase(error) })
   }

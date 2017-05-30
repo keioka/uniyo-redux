@@ -1,61 +1,23 @@
-import { schoolsSearchSaga, schoolInfoSaga } from './schools'
-import { logInSaga, userCreateSaga, tokenRefreshSaga, currentUserSaga, currentUserDonutsSaga } from './auth'
-import { addUserTagsSaga, hashtagDeleteSaga, hashtagsUserSaga, updateUserProfilePicSaga } from './profile'
-import { postInfoSaga, postsSearchSaga, postCreateSaga, postGiveDonutsSaga, answerSearchSaga, answerCreateSaga } from './post'
-import { commentsSearchSaga, commentCreateSaga, commentGiveDonutsSaga } from './comment'
-import { userInfoSaga, userInfoAsync, userSearchSaga, userGiveDonutsSaga } from './user'
-import { messageSearchSaga, messageCreateSaga } from './message'
-import { channelSearchSaga, channelCreateSaga } from './channel'
-import { hashtagTrendingSearchSaga } from './hashtag'
-import { notificationSearchSaga, notificationReadMarkSaga } from './notification'
+import * as schoolSagas from './schools'
+import * as authSagas from './auth'
+import * as usersSagas from './profile'
+import * as postSagas from './post'
+import * as commentSagas from './comment'
+import * as userSagas from './user'
+import * as messageSagas from './message'
+import * as channelSagas from './channel'
+import * as hashtagSagas from './hashtag'
+import * as notificationSagas from './notification'
 
 export default {
-  // school search
-  schoolsSearchSaga,
-  schoolInfoSaga,
-
-  // auth
-  logInSaga,
-  userCreateSaga,
-  currentUserSaga,
-  tokenRefreshSaga,
-  addUserTagsSaga,
-  hashtagDeleteSaga,
-  hashtagsUserSaga,
-  updateUserProfilePicSaga,
-  currentUserDonutsSaga,
-
-  // hashtag
-  hashtagTrendingSearchSaga,
-
-  // post
-  postInfoSaga,
-  postsSearchSaga,
-  postCreateSaga,
-  postGiveDonutsSaga,
-  answerSearchSaga,
-  answerCreateSaga,
-
-  // comment
-  commentsSearchSaga,
-  commentGiveDonutsSaga,
-  commentCreateSaga,
-
-  // user
-  userInfoAsync,
-  userInfoSaga,
-  userSearchSaga,
-  userGiveDonutsSaga,
-
-  // message
-  messageSearchSaga,
-  messageCreateSaga,
-
-  // channel
-  channelSearchSaga,
-  channelCreateSaga,
-
-  // notification
-  notificationSearchSaga,
-  notificationReadMarkSaga,
+  ...schoolSagas,
+  ...authSagas,
+  ...usersSagas,
+  ...postSagas,
+  ...userSagas,
+  ...commentSagas,
+  ...messageSagas,
+  ...channelSagas,
+  ...hashtagSagas,
+  ...notificationSagas,
 }

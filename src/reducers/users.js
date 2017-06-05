@@ -5,6 +5,7 @@ import { actionTypes } from '../actions'
 
 const initialState = Immutable({
   all: [],
+  search: [],
   error: {},
 })
 
@@ -24,7 +25,7 @@ const users = (state = initialState, action) => {
 
     case actionTypes.userInfo.success: {
       return Immutable(state).merge({
-        all: _.uniqBy([action.result.data], data => data.id),
+        all: _.uniqBy([...state.all, action.result.data], data => data.id),
         fetching: false,
       })
     }
@@ -44,7 +45,8 @@ const users = (state = initialState, action) => {
 
     case actionTypes.userSearch.success: {
       return Immutable(state).merge({
-        all: _.uniqBy([...action.result.data], data => data.id),
+        all: _.uniqBy([...state.all, ...action.result.data], data => data.id),
+        search: [...action.result.data],
         fetching: false,
       })
     }
@@ -52,6 +54,24 @@ const users = (state = initialState, action) => {
     case actionTypes.userSearch.error: {
       return Immutable(state).merge({
         error: action.error,
+        fetching: false,
+      })
+    }
+
+    case actionTypes.userGiveDonuts.success: {
+      const { userId, amount } = action.result.data
+
+      const newUsers = Immutable.asMutable([ ...state.all ], { deep: true })
+      console.log(newUsers)
+      newUsers.filter(user => user.id == userId)
+              .map(user => {
+                const currentCount = user.receivedDonutsCount + amount
+                user.receivedDonutsCount = currentCount
+                return user
+              })
+      console.log(newUsers)
+      return Immutable(state).merge({
+        all: _.uniqBy([ ...state.all, ...newUsers ], data => data.id),
         fetching: false,
       })
     }

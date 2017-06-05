@@ -164,6 +164,51 @@ const posts = (state = initialState, action) => {
       })
     }
 
+    case actionTypes.answerSearch.request: {
+      return Immutable(state).merge({
+        fetching: true
+      })
+    }
+
+    case actionTypes.answerSearch.success: {
+      const newPosts = _.uniqBy(Immutable.asMutable([...state.all, ...action.result.data], { deep: true }), data => data.id)
+      newPosts.sort((a, b) => moment.utc(b.createdAt).diff(moment.utc(a.createdAt)))
+      return Immutable(state).merge({
+        all: newPosts,
+        fetching: false,
+      })
+    }
+
+    case actionTypes.answerSearch.error: {
+      return Immutable(state).merge({
+        error: action.error,
+        fetching: false,
+      })
+    }
+
+    case actionTypes.answerCreate.request: {
+      return Immutable(state).merge({
+        fetching: true
+      })
+    }
+
+    case actionTypes.answerCreate.success: {
+      const newPosts = _.uniqBy(Immutable.asMutable([...state.all, action.result.data], { deep: true }), data => data.id)
+      newPosts.sort((a, b) => moment.utc(b.createdAt).diff(moment.utc(a.createdAt)))
+
+      return Immutable(state).merge({
+        all: newPosts,
+        fetching: false,
+      })
+    }
+
+    case actionTypes.answerCreate.error: {
+      return Immutable(state).merge({
+        error: action.error,
+        fetching: false,
+      })
+    }
+
     default: {
       return state
     }

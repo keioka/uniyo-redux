@@ -1,8 +1,10 @@
-import { put, takeLatest } from 'redux-saga/effects'
-import { logIn, tokenRefresh, userCreate, currentUser, currentUserDonuts } from '../actions/types'
+import { put, call, takeLatest } from 'redux-saga/effects'
+import Fingerprint2 from 'fingerprintjs2'
+import UAParser from 'ua-parser-js'
+
+import { logIn, tokenRefresh, userCreate, currentUser, currentUserDonuts, addDevice } from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
-
 const CLIENT_ID = 'qD1xzEFECX3JplYNIsmtFIb9lkdRF8XPuUR3jBR26cV0to5gnlKAYKc48PXJKpD'
 
 export function* logInAsync({ username, password, schoolId }) {
@@ -97,15 +99,21 @@ function* currentUserDonutsAsync({ accessToken }) {
 }
 
 
-function* addDevice({ accessToken, endpoint, authSecret, p256dhKey }) {
-  const params = {
-    deviceId,
-    deviceType,
-    endpoint,
-    authSecret,
-    p256dhKey,
-    accessToken
+function* addDeviceAsync({ accessToken, endpoint, authSecret, p256dhKey }) {
+
+  let deviceId
+
+  const getDevice = () => {
+    return new Promise((resolve) => {
+      new Fingerprint2().get(function(result, components) {
+        resolve(result)
+      })
+    })
   }
+  console.log(getDevice)
+  deviceId = yield call(getDevice)
+
+  console.log('deviceId', deviceId)
 
   const deviceTypeMapping = {
     'Chrome': 'BROWSER_CHROME',
@@ -115,19 +123,30 @@ function* addDevice({ accessToken, endpoint, authSecret, p256dhKey }) {
     'Safari': 'BROWSER_SAFARI'
   }
 
-  const browserName = uaParser.getBrowser().name
+  const parser = new UAParser()
+
+  const browserName = parser.getBrowser().name
   const deviceType = deviceTypeMapping[browserName]
    ? deviceTypeMapping[browserName] : 'BROWSER_OTHER'
+
+  const params = {
+    deviceId,
+    deviceType,
+    endpoint,
+    authSecret,
+    p256dhKey,
+    accessToken
+  }
 
   const body = converter.toFormUrlEncoded(params)
 
   try {
-    const result = yield api.post('oauth/token', {
+    const result = yield api.post('users/me/devices', {
       data: body,
     })
-    yield put({ type: tokenRefresh.success, result: converter.snakeToCamelCase(result) })
+    yield put({ type: addDevice.success, result: converter.snakeToCamelCase(result) })
   } catch (error) {
-    yield put({ type: tokenRefresh.error, error })
+    yield put({ type: addDevice.error, error })
   }
 }
 
@@ -145,6 +164,10 @@ export function* tokenRefreshSaga() {
 
 export function* currentUserSaga() {
   yield takeLatest(currentUser.request, currentUserAsync)
+}
+
+export function* addDeviceSaga() {
+  yield takeLatest(addDevice.request, addDeviceAsync)
 }
 
 export function* currentUserDonutsSaga() {

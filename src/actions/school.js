@@ -18,7 +18,7 @@ export const schoolsSearch = (query, limit = 10) => ({
  * @param {number} id
  * @returns {object} action
  */
-export const schoolInfo = id => ({
-  type: actionTypes.schoolInfo,
+export const schoolInfo = ({ id }) => ({
+  type: actionTypes.schoolInfo.request,
   id,
 })

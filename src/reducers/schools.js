@@ -33,6 +33,23 @@ const schools = (state = initialState, action) => {
         fetching: false,
       })
 
+    case actionTypes.schoolInfo.request:
+      return Immutable(state).merge({
+        fetching: true,
+      })
+
+    case actionTypes.schoolInfo.success:
+      return Immutable(state).merge({
+        data: action.data,
+        fetching: false,
+      })
+
+    case actionTypes.schoolInfo.error:
+      return Immutable(state).merge({
+        error: action.error,
+        fetching: false,
+      })
+
     default:
       return state
   }

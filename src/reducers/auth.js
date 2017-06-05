@@ -174,13 +174,14 @@ const auth = (state = initialState, action) => {
     }
 
     case actionTypes.userReceivedDonutsFetch.success: {
-      const { amount } = action.result.data
+      const { fromUser } = action.result.data
 
       return Immutable(state).merge({
         ...state,
         currentUser: {
           ...state.currentUser,
-          receivedDonutsCount: state.currentUser.receivedDonutsCount + amount,
+          receivedDonutsCount: state.currentUser.receivedDonutsCount + 1,
+          donutsHistory: [...state.currentUser.donutsHistory, { fromUser }],
         }
       })
     }

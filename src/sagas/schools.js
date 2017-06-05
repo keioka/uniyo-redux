@@ -20,7 +20,7 @@ function* schoolsSearchAsync(action) {
     } else {
       result = { data: [] }
     }
-    yield put({ type: schoolsSearch.success, data: result.data })
+    yield put({ type: schoolsSearch.success, data: [...result.data] })
   } catch (error) {
     yield put({ type: schoolsSearch.error, error })
   }
@@ -34,9 +34,9 @@ function* schoolsSearchAsync(action) {
 function* schoolInfoAsync(action) {
   try {
     const result = yield api.get(`schools/${action.id}`)
-    yield put({ type: schoolInfo.success, schoolInfoResult: result })
+    yield put({ type: schoolInfo.success, data: [ result.data ]})
   } catch (error) {
-    yield put({ type: schoolInfo.error, schoolInfoError: error })
+    yield put({ type: schoolInfo.error, error: error })
   }
 }
 

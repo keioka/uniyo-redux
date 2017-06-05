@@ -48,8 +48,14 @@ export function* userGiveDonutsAsync({ amount, accessToken, userId }) {
       params: converter.camelToSnakeCase(params),
     })
 
-    yield put({ type: userGiveDonuts.success, result: converter.snakeToCamelCase(result) })
-    return converter.snakeToCamelCase(result.data)
+    if (result.status === 204) {
+      const payload = { data: { userId } }
+      yield put({ type: userGiveDonuts.success, result: payload })
+      return converter.snakeToCamelCase(payload)
+    } else {
+      yield put({ type: userGiveDonuts.error })
+    }
+
   } catch (error) {
     yield put({ type: userGiveDonuts.error, error })
   }

@@ -24,9 +24,10 @@ export const logIn = ({ username, password, schoolId }) => ({
  * @param {number} schoolid user's school id.
  * @returns {object} action
  */
-export const userCreate = ({ name, email, password, schoolId }) => ({
+export const userCreate = ({ firstName, lastName, email, password, schoolId }) => ({
   type: actionTypes.userCreate.request,
-  name,
+  firstName,
+  lastName,
   email,
   password,
   schoolId,

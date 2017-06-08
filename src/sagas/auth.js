@@ -29,17 +29,22 @@ export function* logInAsync({ username, password, schoolId }) {
   }
 }
 
-function* userCreateAsync({ name, email, password, schoolId }) {
+function* userCreateAsync({ firstName, lastName, email, password, schoolId }) {
+
+  const params = {
+    firstName,
+    lastName,
+    email,
+    password,
+    schoolId,
+    client_id: CLIENT_ID,
+  }
+
+  const body = converter.camelToSnakeCase(params)
+
   try {
     const result = yield api.post('users', {
-      data: {
-        name,
-        email,
-        password,
-        oauth_scope: 'full',
-        school_id: schoolId,
-        client_id: CLIENT_ID,
-      },
+      data: body,
       headers: { 'Content-Type': 'application/json' },
     })
     yield put({ type: userCreate.success, result: converter.snakeToCamelCase(result) })
@@ -110,10 +115,7 @@ function* addDeviceAsync({ accessToken, endpoint, authSecret, p256dhKey }) {
       })
     })
   }
-  console.log(getDevice)
   deviceId = yield call(getDevice)
-
-  console.log('deviceId', deviceId)
 
   const deviceTypeMapping = {
     'Chrome': 'BROWSER_CHROME',

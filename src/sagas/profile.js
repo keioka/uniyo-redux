@@ -1,4 +1,4 @@
-import { call, put, takeLatest, fork } from 'redux-saga/effects'
+import { call, put, takeLatest, fork, select } from 'redux-saga/effects'
 import * as converter from '../helpers/converter'
 import { hashtagAdd, hashtagDelete, userPictureUpdate } from '../actions/types'
 import api from '../helpers/api'
@@ -12,6 +12,15 @@ import FormData from 'form-data'
  */
 
  export function* addHashTagRequest(hashtag, tagType, accessToken) {
+   //
+  //  const hashtags = yield select(state => state.auth.currentUser.hashtags)
+  //  console.warn(hashtags)
+  //  const isAlreadyExsist = hashtags.includes(hashtagObj => hashtagObj.hashtag === hashtag)
+   //
+  //  if (isAlreadyExsist) {
+  //    yield put({ type: hashtagAdd.error, result: converter.snakeToCamelCase(error) })
+  //  }
+
    const params = {
      hashtag,
      type: tagType,

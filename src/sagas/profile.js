@@ -12,14 +12,14 @@ import FormData from 'form-data'
  */
 
  export function* addHashTagRequest(hashtag, tagType, accessToken) {
-
-   const hashtags = yield select(state => state.auth.currentUser.hashtags)
-   console.warn(hashtags)
-   const isAlreadyExsist = hashtags.includes(hashtagObj => hashtagObj.hashtag === hashtag)
-
-   if (isAlreadyExsist) {
-     yield put({ type: hashtagAdd.error, result: converter.snakeToCamelCase(error) })
-   }
+   //
+  //  const hashtags = yield select(state => state.auth.currentUser.hashtags)
+  //  console.warn(hashtags)
+  //  const isAlreadyExsist = hashtags.includes(hashtagObj => hashtagObj.hashtag === hashtag)
+   //
+  //  if (isAlreadyExsist) {
+  //    yield put({ type: hashtagAdd.error, result: converter.snakeToCamelCase(error) })
+  //  }
 
    const params = {
      hashtag,

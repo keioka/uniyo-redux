@@ -37,6 +37,7 @@ function* userCreateAsync({ firstName, lastName, email, password, schoolId }) {
     email,
     password,
     schoolId,
+    scope: 'full',
     client_id: CLIENT_ID,
   }
 

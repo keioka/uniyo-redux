@@ -91,7 +91,7 @@ export function* postCreateAsync({ text, accessToken, postType = 'POST', rating 
 
   if (classNote) {
     params['classNote'] = classNote
-    params['ContentType'] = classNote.type
+    params['contentType'] = classNote.type
   }
 
   const snakeCaseParams = converter.camelToSnakeCase(params)

@@ -62,14 +62,30 @@ const users = (state = initialState, action) => {
       const { userId, amount } = action.result.data
 
       const newUsers = Immutable.asMutable([ ...state.all ], { deep: true })
-      console.log(newUsers)
       newUsers.filter(user => user.id == userId)
               .map(user => {
                 const currentCount = user.receivedDonutsCount + amount
                 user.receivedDonutsCount = currentCount
                 return user
               })
-      console.log(newUsers)
+      return Immutable(state).merge({
+        all: _.uniqBy([ ...state.all, ...newUsers ], data => data.id),
+        fetching: false,
+      })
+    }
+
+    case actionTypes.otherUserReceivedDonutsFetch.success: {
+      const { toUser } = action.result.data
+      const userId = toUser.id
+
+      const newUsers = Immutable.asMutable([ ...state.all ], { deep: true })
+      newUsers.filter(user => user.id == userId)
+              .map(user => {
+                const currentCount = user.receivedDonutsCount + 1
+                user.receivedDonutsCount = currentCount
+                return user
+              })
+
       return Immutable(state).merge({
         all: _.uniqBy([ ...state.all, ...newUsers ], data => data.id),
         fetching: false,

@@ -152,6 +152,8 @@ const posts = (state = initialState, action) => {
       const { postId, amount } = action.result.data
 
       const newPosts = Immutable.asMutable([ ...state.all ], { deep: true })
+      const newTrending = Immutable.asMutable([ ...state.trending ], { deep: true })
+      const newRelevant = Immutable.asMutable([ ...state.relevant ], { deep: true })
 
       newPosts.forEach(post => {
         if (post.id === postId) {
@@ -159,8 +161,22 @@ const posts = (state = initialState, action) => {
         }
       })
 
+      newTrending.forEach(post => {
+        if (post.id === postId) {
+          post.donutsCount += amount
+        }
+      })
+
+      newRelevant.forEach(post => {
+        if (post.id === postId) {
+          post.donutsCount += amount
+        }
+      })
+
       return Immutable(state).merge({
-        all: newPosts
+        all: newPosts,
+        trending: newTrending,
+        relevant: newRelevant,
       })
     }
 

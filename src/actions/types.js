@@ -21,6 +21,7 @@ export const userGiveDonuts = actionCreator('USER_GIVE_DONUTS')
 export const userReceivedDonutsFetch = actionCreator('USER_RECEIVED_DONUTS_FETCH')
 export const userSpentDonutsFetch = actionCreator('USER_SPENT_DONUTS_FETCH')
 export const userOnlineStatusUpdate = actionCreator('USER_ONLINE_STATUS_UPDATE')
+export const otherUserReceivedDonutsFetch = actionCreator('OTHER_USER_RECEIVED_DONUTS_FETCH')
 
 export const hashtagsUser = actionCreator('HASHTAGS_USER')
 export const hashtagAdd = actionCreator('HASHTAG_CREATE')

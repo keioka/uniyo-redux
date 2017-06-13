@@ -14,3 +14,8 @@ export const userGiveDonuts = params => ({
   type: actionTypes.userGiveDonuts.request,
   ...params,
 })
+
+export const otherUserReceivedDonutsFetch = params ({
+  type: actionTypes.otherUserReceivedDonutsFetch.request,
+  ...params,
+})

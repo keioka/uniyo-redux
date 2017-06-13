@@ -39,7 +39,7 @@ const comments = (state = initialState, action) => {
     // Used for new comment comming through webSocket
     case actionTypes.commentFetch.success: {
       return Immutable(state).merge({
-        all: _.uniqBy([action.result.data, ...state.all], data => data.id),
+        all: _.uniqBy([...state.all, action.result.data], data => data.id),
         fetching: false,
       })
     }

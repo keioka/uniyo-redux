@@ -58,10 +58,15 @@ const posts = (state = initialState, action) => {
     }
 
     case actionTypes.postsSearch.success: {
+      const trendingPostsId = state.trending.map(post => post.id)
+      const relevantPostsId = state.relevant.map(post => post.id)
+
       const newPosts = _.uniqBy(Immutable.asMutable([...state.all, ...action.result.data], { deep: true }), data => data.id)
       newPosts.sort((a, b) => moment.utc(b.createdAt).diff(moment.utc(a.createdAt)))
+      const nextAllPost = newPosts.filter(post => !trendingPostsId.includes(post.id) && !relevantPostsId.includes(post.id))
+
       return Immutable(state).merge({
-        all: newPosts,
+        all: nextAllPost,
         fetching: false,
       })
     }
@@ -84,8 +89,14 @@ const posts = (state = initialState, action) => {
     }
 
     case actionTypes.postsTrendingSearch.success: {
+      const trendingPosts = _.uniqBy([...action.result.data], data => data.id)
+      const trendingPostsId = trendingPosts.map(post => post.id)
+      const allPost = state.all
+      const nextAllPost = allPost.filter(post => !trendingPostsId.includes(post.id))
+
       return Immutable(state).merge({
-        trending: _.uniqBy([...state.trending, ...action.result.data], data => data.id),
+        all: nextAllPost,
+        trending: trendingPosts,
         fetching: false,
       })
     }
@@ -108,8 +119,13 @@ const posts = (state = initialState, action) => {
     }
 
     case actionTypes.postsRelevantSearch.success: {
+      const relevantPosts = _.uniqBy([...action.result.data], data => data.id)
+      const relevantPostsId = relevantPosts.map(post => post.id)
+      const allPost = state.all
+      const nextAllPost = allPost.filter(post => !relevantPostsId.includes(post.id))
       return Immutable(state).merge({
-        relevant: _.uniqBy([...state.relevant, ...action.result.data], data => data.id),
+        all: nextAllPost,
+        relevant: relevantPosts,
         fetching: false,
       })
     }

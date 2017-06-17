@@ -2,7 +2,7 @@ import { put, call, takeLatest } from 'redux-saga/effects'
 import Fingerprint2 from 'fingerprintjs2'
 import UAParser from 'ua-parser-js'
 
-import { logIn, tokenRefresh, userCreate, currentUser, currentUserDonuts, addDevice } from '../actions/types'
+import { logIn, tokenRefresh, userCreate, currentUser, currentUserDonuts, addDevice, resetPassword } from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
 const CLIENT_ID = 'qD1xzEFECX3JplYNIsmtFIb9lkdRF8XPuUR3jBR26cV0to5gnlKAYKc48PXJKpD'
@@ -104,6 +104,23 @@ function* currentUserDonutsAsync({ accessToken }) {
   }
 }
 
+function* resetPasswordAsync({ email, schoolId }) {
+  const path = `users/${email}/reset_password`
+  const params = {
+    schoolId
+  }
+
+  try {
+    const result = yield api.post(path, {
+      params: converter.toFormUrlEncoded(params),
+    })
+
+    yield put({ type: resetPassword.success })
+  } catch (error) {
+    yield put({ type: resetPassword.error })
+  }
+}
+
 
 function* addDeviceAsync({ accessToken, endpoint, authSecret, p256dhKey }) {
 
@@ -171,6 +188,10 @@ export function* currentUserSaga() {
 
 export function* addDeviceSaga() {
   yield takeLatest(addDevice.request, addDeviceAsync)
+}
+
+export function* resetPasswordSaga() {
+  yield takeLatest(resetPassword.request, resetPasswordAsync)
 }
 
 export function* currentUserDonutsSaga() {

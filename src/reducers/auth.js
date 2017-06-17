@@ -10,6 +10,7 @@ const initialState = Immutable({
   isLogin: false,
   isNewUser: false,
   isUploadingPicture: false,
+  isResetSuccess: null,
   refreshingToken: false,
 })
 
@@ -206,6 +207,18 @@ const auth = (state = initialState, action) => {
           ...state.currentUser,
           donutsHistory: [...state.currentUser.donutsHistory, ...data],
         },
+      })
+    }
+
+    case actionTypes.resetPassword.success: {
+      return Immutable(state).merge({
+        isResetSuccess: true,
+      })
+    }
+
+    case actionTypes.resetPassword.error: {
+      return Immutable(state).merge({
+        isResetSuccess: false,
       })
     }
 

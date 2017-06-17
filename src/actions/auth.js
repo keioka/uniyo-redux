@@ -79,6 +79,17 @@ export const tokenRefresh = token => ({
 })
 
 /**
+ * Requests resetPassword
+ *
+ * @param {string} token refresh token
+ * @returns {object} action
+ */
+export const resetPassword = (params) => ({
+  type: actionTypes.resetPassword.request,
+  ...params,
+})
+
+/**
  * Requests new Tokens by refresh token
  *
  * @param {string} token refresh token

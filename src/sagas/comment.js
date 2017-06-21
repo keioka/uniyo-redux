@@ -1,10 +1,11 @@
 import { put, takeLatest, takeEvery } from 'redux-saga/effects'
-import { commentsSearch, commentGiveDonuts, commentCreate } from '../actions/types'
+import { commentsSearch, commentGiveDonuts, commentCreate, commentFetch } from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
 
-export function* commentsSearchAsync({ postId, accessToken }) {
+export function* commentsSearchAsync({ postId, limit = 50, accessToken }) {
   const params = {
+    limit,
     accessToken,
   }
 
@@ -58,12 +59,20 @@ export function* commentCreateAsync({ text, accessToken, postId }) {
   }
 }
 
+export function* commentFetchAsync(params) {
+  yield put({ type: postCommentsAmountIncrement.request, result: converter.snakeToCamelCase(result) })
+}
+
 export function* commentsSearchSaga() {
   yield takeLatest(commentsSearch.request, commentsSearchAsync)
 }
 
 export function* commentGiveDonutsSaga() {
   yield takeEvery(commentGiveDonuts.request, commentGiveDonutsAsync)
+}
+
+export function* commentsAmountIncrementSaga() {
+  yield takeEvery(commentFetch.success, commentsAmountIncrementAsync)
 }
 
 export function* commentCreateSaga() {

@@ -59,35 +59,36 @@ const users = (state = initialState, action) => {
     }
 
     case actionTypes.userGiveDonuts.success: {
-      console.warn('userGiveDonuts.success')
       const { userId, amount } = action.result.data
+      const nextAllUsers = Immutable.asMutable([ ...state.all ], { deep: true })
+      const userIndex = nextAllUsers.findIndex(user => user.id == userId)
+      const user = nextAllUsers[userIndex]
 
-      const newUsers = Immutable.asMutable([ ...state.all ], { deep: true })
-      newUsers.filter(user => user.id == userId)
-              .forEach(user => {
-                const currentCount = user.receivedDonutsCount + amount
-                user.receivedDonutsCount = currentCount
-              })
-      return Immutable(state).merge({
-        all: _.uniqBy([...newUsers, ...state.all], data => data.id),
-        fetching: false,
-      })
+      if (userIndex > -1 && nextAllUsers[userIndex]) {
+        const prevDonutsCount =  nextAllUsers[userIndex].receivedDonutsCount
+        nextAllUsers[userIndex] = Object.assign(nextAllUsers[userIndex], {
+          receivedDonutsCount: prevDonutsCount + 1,
+        })
+      }
     }
 
     case actionTypes.otherUserReceivedDonutsFetch.success: {
       const { toUser } = action.result.data
       const userId = toUser.id
 
-      const newUsers = Immutable.asMutable([ ...state.all ], { deep: true })
-      newUsers.filter(user => user.id == userId)
-              .map(user => {
-                const currentCount = user.receivedDonutsCount + 1
-                user.receivedDonutsCount = currentCount
-                return user
-              })
+      const nextAllUsers = Immutable.asMutable([ ...state.all ], { deep: true })
+      const userIndex = nextAllUsers.findIndex(user => user.id == userId)
+      const user = nextAllUsers[userIndex]
+
+      if (userIndex > -1 && nextAllUsers[userIndex]) {
+        const prevDonutsCount =  nextAllUsers[userIndex].receivedDonutsCount
+        nextAllUsers[userIndex] = Object.assign(nextAllUsers[userIndex], {
+          receivedDonutsCount: prevDonutsCount + 1,
+        })
+      }
 
       return Immutable(state).merge({
-        all: _.uniqBy([ ...newUsers, ...state.all ], data => data.id),
+        all: nextAllUsers,
         fetching: false,
       })
     }

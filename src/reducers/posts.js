@@ -196,6 +196,45 @@ const posts = (state = initialState, action) => {
       })
     }
 
+    case actionTypes.commentFetch.success: {
+      const { postId } = action.result.data
+      const nextPostAll = Immutable.asMutable([ ...state.all ], { deep: true })
+      const nextTrending = Immutable.asMutable([ ...state.trending ], { deep: true })
+      const nextRelevant = Immutable.asMutable([ ...state.relevant ], { deep: true })
+
+      const indexPostAll = nextPostAll.findIndex(post => post.id === postId)
+      const indexTrending = nextTrending.findIndex(post => post.id === postId)
+      const indexRelevant = nextRelevant.findIndex(post => post.id === postId)
+
+      if (indexPostAll > -1 && nextPostAll[indexPostAll]) {
+        const prevCommentsCountPostAll = nextPostAll[indexPostAll].commentsCount
+        nextPostAll[indexPostAll] = Object.assign(nextPostAll[indexPostAll], {
+          commentsCount: prevCommentsCountPostAll + 1,
+        })
+      }
+
+      if (indexTrending > -1 && nextTrending[indexTrending]) {
+        const prevCommentsTrending = nextTrending[indexTrending].commentsCount
+        nextTrending[indexTrending] = Object.assign(nextTrending[indexTrending], {
+          commentsCount: prevCommentsTrending + 1,
+        })
+      }
+
+      if (indexRelevant > -1 && nextRelevant[indexRelevant]) {
+        const prevCommentsRelevant = nextRelevant[indexRelevant].commentsCount
+        nextRelevant[indexRelevant] = Object.assign(nextRelevant[indexRelevant], {
+          commentsCount: prevCommentsRelevant + 1,
+        })
+      }
+
+      return Immutable(state).merge({
+        all: nextPostAll,
+        trending: nextTrending,
+        relevant: nextRelevant,
+      })
+    }
+
+
     case actionTypes.answerSearch.request: {
       return Immutable(state).merge({
         fetching: true

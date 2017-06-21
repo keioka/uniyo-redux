@@ -154,7 +154,7 @@ const auth = (state = initialState, action) => {
     case actionTypes.hashtagDelete.success: {
       const hashtags = [...state.currentUser.hashtags]
       const index = hashtags.findIndex(hashtag => hashtag.hashtag == action.result.data.hashtag)
-      if (index > 0) {
+      if (index >= 0) {
         hashtags.splice(index, 1)
       }
       return Immutable(state).merge({

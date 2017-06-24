@@ -58,21 +58,27 @@ const users = (state = initialState, action) => {
       })
     }
 
-    case actionTypes.userGiveDonuts.success: {
-      const { userId, amount } = action.result.data
-      const nextAllUsers = Immutable.asMutable([ ...state.all ], { deep: true })
-      const userIndex = nextAllUsers.findIndex(user => user.id == userId)
-      const user = nextAllUsers[userIndex]
-
-      if (userIndex > -1 && nextAllUsers[userIndex]) {
-        const prevDonutsCount =  nextAllUsers[userIndex].receivedDonutsCount
-        nextAllUsers[userIndex] = Object.assign(nextAllUsers[userIndex], {
-          receivedDonutsCount: prevDonutsCount + 1,
-        })
-      }
-    }
+    // case actionTypes.userGiveDonuts.success: {
+    //   const { userId, amount } = action.result.data
+    //   const nextAllUsers = Immutable.asMutable([ ...state.all ], { deep: true })
+    //   const userIndex = nextAllUsers.findIndex(user => user.id == userId)
+    //   const user = nextAllUsers[userIndex]
+    //
+    //   if (userIndex > -1 && nextAllUsers[userIndex]) {
+    //     const prevDonutsCount =  nextAllUsers[userIndex].receivedDonutsCount
+    //     nextAllUsers[userIndex] = Object.assign(nextAllUsers[userIndex], {
+    //       receivedDonutsCount: prevDonutsCount + 1,
+    //     })
+    //   }
+    //
+    //   return Immutable(state).merge({
+    //     all: nextAllUsers,
+    //     fetching: false,
+    //   })
+    // }
 
     case actionTypes.otherUserReceivedDonutsFetch.success: {
+      console.log(action)
       const { toUser } = action.result.data
       const userId = toUser.id
 

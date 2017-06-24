@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects'
+import { put, takeLatest, takeEvery } from 'redux-saga/effects'
 import { notificationSearch, notificationReadMark } from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
@@ -60,5 +60,5 @@ export function* notificationSearchSaga() {
 }
 
 export function* notificationReadMarkSaga() {
-  yield takeLatest(notificationReadMark.request, notificationReadMarkAsync)
+  yield takeEvery(notificationReadMark.request, notificationReadMarkAsync)
 }

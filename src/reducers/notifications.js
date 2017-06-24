@@ -4,10 +4,28 @@ import _ from 'lodash'
 
 const initialState = Immutable({
   all: [],
+  unReadPostIds: [],
+  unReadChannelIds: [],
   error: {},
   fetching: false,
 })
 
+
+const parseNotification = (notification) => {
+  if (notification.post) {
+    return {
+      type: 'POST',
+      postId: post.id,
+    }
+  }
+
+  if (notification.channel) {
+    return {
+      type: 'MESSAGE',
+      messageId: message.id,
+    }
+  }
+}
 /**
  * Post reducer
  *
@@ -23,8 +41,14 @@ const notifications = (state = initialState, action) => {
     }
 
     case actionTypes.notificationSearch.success: {
+      const notifications = action.result.data
+      const unReadNotifications = notifications.filter(notification => !notification.isRead)
+      const unReadPostIds = unReadNotifications.filter(notification => notification.post).map(notification => ({ postId: notification.post.id, notificationId: notification.id }))
+      const unReadChannelIds = unReadNotifications.filter(notification => notification.channel).map(notification => ({ channelId: notification.channel.id, notificationId: notification.id }))
       return Immutable(state).merge({
-        all: _.uniqBy([...state.all, ...action.result.data], data => data.id),
+        all: _.uniqBy([...state.all, ...notifications ], data => data.id),
+        unReadPostIds,
+        unReadChannelIds,
         fetching: false,
       })
     }
@@ -37,8 +61,17 @@ const notifications = (state = initialState, action) => {
     }
 
     case actionTypes.notificationFetch.success: {
+      const result = action.result.data
+      const nextNotifications = Immutable.asMutable([ result, ...state.all ], { deep: true })
+      const unReadNotifications = nextNotifications.filter(notification => !notification.isRead)
+
+      const unReadPostIds = nextNotifications.filter(notification => notification.post && !notification.isRead).map(notification => ({ postId: notification.post.id, notificationId: notification.id }))
+      const unReadChannelIds = nextNotifications.filter(notification => notification.channel && !notification.isRead).map(notification => ({ channelId: notification.channel.id, notificationId: notification.id }))
+
       return Immutable(state).merge({
-        all: _.uniqBy([action.result.data, ...state.all], data => data.id),
+        all: _.uniqBy(nextNotifications, data => data.id),
+        unReadPostIds: unReadPostIds,
+        unReadChannelIds: unReadChannelIds,
         fetching: false,
       })
     }
@@ -58,16 +91,20 @@ const notifications = (state = initialState, action) => {
     case actionTypes.notificationReadMark.success: {
       const { notificationId } = action.result.data
 
-      const newNotifications = Immutable.asMutable([ ...state.all ], { deep: true })
+      const nextNotifications = Immutable.asMutable([ ...state.all ], { deep: true })
+      const nextUnReadPostIds = Immutable.asMutable([ ...state.unReadPostIds ], { deep: true })
+      const nextUnReadChannelIds = Immutable.asMutable([ ...state.unReadChannelIds ], { deep: true })
 
-      newNotifications.forEach(notification => {
+      nextNotifications.forEach(notification => {
         if (notification.id === notificationId) {
           notification.isRead = true
         }
       })
 
       return Immutable(state).merge({
-        all: newNotifications
+        all: nextNotifications,
+        unReadPostIds: nextUnReadPostIds.filter(ids => notificationId !== ids.notificationId),
+        unReadChannelIds: nextUnReadChannelIds.filter(ids => notificationId !== ids.notificationId),
       })
     }
 

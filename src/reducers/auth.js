@@ -182,7 +182,7 @@ const auth = (state = initialState, action) => {
         currentUser: {
           ...state.currentUser,
           receivedDonutsCount: state.currentUser.receivedDonutsCount + 1,
-          donutsHistory: [...state.currentUser.donutsHistory, { fromUser }],
+          donutsHistory: [ { fromUser }, ...state.currentUser.donutsHistory ],
         }
       })
     }

@@ -63,7 +63,9 @@ const posts = (state = initialState, action) => {
 
       const newPosts = _.uniqBy(Immutable.asMutable([...state.all, ...action.result.data], { deep: true }), data => data.id)
       newPosts.sort((a, b) => moment.utc(b.createdAt).diff(moment.utc(a.createdAt)))
-      const nextAllPost = newPosts.filter(post => !trendingPostsId.includes(post.id) && !relevantPostsId.includes(post.id))
+      const nextAllPost = newPosts.filter(post => !trendingPostsId.includes(post.id) && !relevantPostsId.includes(post.id)).map(post => Object.assign(post, {
+        isRead: false,
+      }))
 
       return Immutable(state).merge({
         all: nextAllPost,

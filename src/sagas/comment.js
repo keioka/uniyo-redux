@@ -33,7 +33,7 @@ export function* commentGiveDonutsAsync({ accessToken, amount, commentId }) {
       params: converter.camelToSnakeCase(params),
     })
 
-    yield put({ type: commentGiveDonuts.success, result: converter.snakeToCamelCase(result) })
+    yield put({ type: commentGiveDonuts.success, result: converter.snakeToCamelCase({ data: { commentId, amount: 1 } }) })
   } catch (error) {
     yield put({ type: commentGiveDonuts.error, error })
   }

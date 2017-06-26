@@ -1,5 +1,6 @@
 import { put, takeLatest } from 'redux-saga/effects'
 import { schoolsSearch, schoolInfo } from '../actions/types'
+import * as converter from '../helpers/converter'
 import api from '../helpers/api'
 
 /**
@@ -20,7 +21,7 @@ function* schoolsSearchAsync(action) {
     } else {
       result = { data: [] }
     }
-    yield put({ type: schoolsSearch.success, data: [...result.data] })
+    yield put({ type: schoolsSearch.success, data: converter.snakeToCamelCase([...result.data]) })
   } catch (error) {
     yield put({ type: schoolsSearch.error, error })
   }
@@ -34,9 +35,9 @@ function* schoolsSearchAsync(action) {
 function* schoolInfoAsync(action) {
   try {
     const result = yield api.get(`schools/${action.id}`)
-    yield put({ type: schoolInfo.success, data: [ result.data ]})
+    yield put({ type: schoolInfo.success, data: converter.snakeToCamelCase([result.data]) })
   } catch (error) {
-    yield put({ type: schoolInfo.error, error: error })
+    yield put({ type: schoolInfo.error, error })
   }
 }
 

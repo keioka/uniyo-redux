@@ -12,6 +12,7 @@ const initialState = Immutable({
   isUploadingPicture: false,
   isResetSuccess: null,
   refreshingToken: false,
+  error: {},
 })
 
 /**
@@ -131,6 +132,14 @@ const auth = (state = initialState, action) => {
         currentUser: action.result.data,
       })
     }
+
+    case actionTypes.userPictureUpdate.error: {
+      return Immutable(state).merge({
+        isUploadingPicture: false,
+        error: action.error.response.data.error,
+      })
+    }
+
 
     case actionTypes.currentUser.success: {
       return Immutable(state).merge({

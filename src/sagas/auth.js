@@ -122,18 +122,7 @@ function* resetPasswordAsync({ email, schoolId }) {
 }
 
 
-function* addDeviceAsync({ accessToken, endpoint, authSecret, p256dhKey }) {
-
-  let deviceId
-
-  const getDevice = () => {
-    return new Promise((resolve) => {
-      new Fingerprint2().get(function(result, components) {
-        resolve(result)
-      })
-    })
-  }
-  deviceId = yield call(getDevice)
+function* addDeviceAsync({ deviceId, accessToken, endpoint, authSecret, p256dhKey }) {
 
   const deviceTypeMapping = {
     'Chrome': 'BROWSER_CHROME',

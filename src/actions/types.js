@@ -2,7 +2,11 @@ import actionCreator from '../helpers/actionCreator'
 
 // Action types that will be used by client apps as well
 
+// export login
+// export signup
+
 export const logIn = actionCreator('LOG_IN')
+export const userCreate = actionCreator('USER_CREATE')
 export const tokenRefresh = actionCreator('TOKEN_REFRESH')
 export const authClearError = actionCreator('AUTH_CLEAR_ERROR')
 export const currentUser = actionCreator('CURRENT_USER')
@@ -13,7 +17,6 @@ export const resetPassword = actionCreator('RESET_PASSWORD')
 export const schoolInfo = actionCreator('SCHOOL_INFO')
 export const schoolsSearch = actionCreator('SCHOOLS_SEARCH')
 
-export const userCreate = actionCreator('USER_CREATE')
 export const userInfo = actionCreator('USER_INFO')
 export const userUpdate = actionCreator('USER_UPDATE')
 export const userSearch = actionCreator('USER_SEARCH')
@@ -26,6 +29,7 @@ export const otherUserReceivedDonutsFetch = actionCreator('OTHER_USER_RECEIVED_D
 
 export const hashtagsUser = actionCreator('HASHTAGS_USER')
 export const hashtagAdd = actionCreator('HASHTAG_CREATE')
+export const hashtagSearch = actionCreator('HASHTAG_SEARCH')
 export const hashtagTrendingSearch = actionCreator('HASHTAG_TRENDING')
 export const hashtagDelete = actionCreator('HASHTAG_DELETE')
 

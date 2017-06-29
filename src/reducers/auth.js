@@ -45,6 +45,7 @@ const auth = (state = initialState, action) => {
         },
         isLogin: true,
         fetching: false,
+        error: {}
       })
     }
 
@@ -77,6 +78,7 @@ const auth = (state = initialState, action) => {
         isLogin: true,
         isNewUser: true,
         fetching: false,
+        error: {},
       })
     }
 
@@ -90,6 +92,7 @@ const auth = (state = initialState, action) => {
     case actionTypes.authClearError.request: {
       return Immutable(state).merge({
         error: {},
+        isResetSuccess: false,
       })
     }
 

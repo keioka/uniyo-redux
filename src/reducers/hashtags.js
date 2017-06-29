@@ -3,6 +3,7 @@ import { actionTypes } from '../actions'
 import _ from 'lodash'
 
 const initialState = Immutable({
+  all: [],
   trending: [],
   error: {},
   fetching: false,
@@ -16,6 +17,26 @@ const initialState = Immutable({
  */
 const hashtags = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.hashtagSearch.request: {
+      return Immutable(state).merge({
+        fetching: true
+      })
+    }
+
+    case actionTypes.hashtagSearch.success: {
+      return Immutable(state).merge({
+        all: action.result.data,
+        fetching: true
+      })
+    }
+
+    case actionTypes.hashtagSearch.error: {
+      return Immutable(state).merge({
+        all: [],
+        fetching: true
+      })
+    }
+
     case actionTypes.hashtagTrendingSearch.request: {
       return Immutable(state).merge({
         fetching: true

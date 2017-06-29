@@ -2,7 +2,7 @@ import { put, call, takeLatest } from 'redux-saga/effects'
 import Fingerprint2 from 'fingerprintjs2'
 import UAParser from 'ua-parser-js'
 
-import { logIn, tokenRefresh, userCreate, currentUser, currentUserDonuts, addDevice, resetPassword } from '../actions/types'
+import { logIn, tokenRefresh, userCreate, currentUser, currentUserDonuts, addDevice, resetPassword, newPasswordUpdate } from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
 const CLIENT_ID = 'qD1xzEFECX3JplYNIsmtFIb9lkdRF8XPuUR3jBR26cV0to5gnlKAYKc48PXJKpD'
@@ -122,6 +122,34 @@ function* resetPasswordAsync({ email, schoolId }) {
 }
 
 
+function* newPasswordUpdateAsync({ password, passwordConfirmation, token }) {
+  const path = `users/reset_password`
+  const params = {
+    password,
+    passwordConfirmation,
+    token,
+  }
+
+  const snakeCaseParams = converter.camelToSnakeCase(params)
+
+  // generate form data
+  const body = new FormData()
+
+  // append all snake case params to body
+  Object.keys(snakeCaseParams).forEach(key => body.append(key, snakeCaseParams[key]))
+
+  try {
+    const result = yield api.post(path, {
+      data: body,
+    })
+
+    yield put({ type: newPasswordUpdate.success })
+  } catch (error) {
+    yield put({ type: newPasswordUpdate.error, error })
+  }
+}
+
+
 function* addDeviceAsync({ deviceId, accessToken, endpoint, authSecret, p256dhKey }) {
 
   const deviceTypeMapping = {
@@ -181,6 +209,10 @@ export function* addDeviceSaga() {
 
 export function* resetPasswordSaga() {
   yield takeLatest(resetPassword.request, resetPasswordAsync)
+}
+
+export function* newPasswordUpdateSaga() {
+  yield takeLatest(newPasswordUpdate.request, newPasswordUpdateAsync)
 }
 
 export function* currentUserDonutsSaga() {

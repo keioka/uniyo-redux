@@ -90,6 +90,18 @@ export const resetPassword = (params) => ({
 })
 
 /**
+ * Requests newPasswordUpdate
+ *
+ * @param {string} token refresh token
+ * @returns {object} action
+ */
+export const newPasswordUpdate = (params) => ({
+  type: actionTypes.newPasswordUpdate.request,
+  ...params,
+})
+
+
+/**
  * Requests new Tokens by refresh token
  *
  * @param {string} token refresh token

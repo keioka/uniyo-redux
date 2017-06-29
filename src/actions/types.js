@@ -13,7 +13,7 @@ export const currentUser = actionCreator('CURRENT_USER')
 export const currentUserDonuts = actionCreator('CURRENT_USER_DONUTS')
 export const addDevice = actionCreator('ADD_DEVICE')
 export const resetPassword = actionCreator('RESET_PASSWORD')
-
+export const newPasswordUpdate = actionCreator('NEW_PASSWORD_UPDATE')
 export const schoolInfo = actionCreator('SCHOOL_INFO')
 export const schoolsSearch = actionCreator('SCHOOLS_SEARCH')
 

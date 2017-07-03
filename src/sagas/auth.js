@@ -110,9 +110,14 @@ function* resetPasswordAsync({ email, schoolId }) {
     schoolId
   }
 
+  const snakeCaseParams = converter.camelToSnakeCase(params)
+  const body = new FormData()
+  // append all snake case params to body
+  Object.keys(snakeCaseParams).forEach(key => body.append(key, snakeCaseParams[key]))
+
   try {
     const result = yield api.post(path, {
-      params: converter.toFormUrlEncoded(params),
+      data: body,
     })
 
     yield put({ type: resetPassword.success })

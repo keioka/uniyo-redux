@@ -58,3 +58,18 @@ export const commentCreate = params => ({
   type: actionTypes.commentCreate.request,
   ...params,
 })
+
+/**
+ * Requests Comment Delete
+ *
+ * @param {object} params
+ *    @param {number} commentId
+ *    @param {string} accessToken
+ *
+ * @returns {object} action
+ */
+
+export const commentDelete = params => ({
+  type: actionTypes.commentDelete.request,
+  ...params,
+})

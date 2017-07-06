@@ -2,6 +2,7 @@ import { put, takeLatest, takeEvery } from 'redux-saga/effects'
 import {
   postInfo,
   postsSearch,
+  postDelete,
   postGiveDonuts,
   postCreate,
   answerSearch,
@@ -149,6 +150,23 @@ export function* postsRelevantSearchAsync({ accessToken, limit = 10, types = nul
   }
 }
 
+export function* postDeleteAsync({ postId, accessToken }) {
+
+  const params = {
+    accessToken,
+  }
+
+  try {
+    const result = yield api.delete(`posts/${postId}`, {
+      params: converter.toFormUrlEncoded(params),
+    })
+
+    yield put({ type: postDelete.success, result: converter.snakeToCamelCase(result) })
+  } catch (error) {
+    yield put({ type: postDelete.error, error })
+  }
+}
+
 
 /*
   Answer
@@ -204,6 +222,10 @@ export function* postsSearchSaga() {
 
 export function* postCreateSaga() {
   yield takeLatest(postCreate.request, postCreateAsync)
+}
+
+export function* postDeleteSaga() {
+  yield takeLatest(postDelete.request, postDeleteAsync)
 }
 
 export function* postsTrendingSearchSaga() {

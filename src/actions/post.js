@@ -54,6 +54,19 @@ export const postCreate = params => ({
 })
 
 /**
+ * Requests post delete
+ *
+ * @param {object} params
+ * @returns {object} action
+ */
+
+export const postDelete = params => ({
+  type: actionTypes.postDelete.request,
+  ...params,
+})
+
+
+/**
  * Requests posts relevant
  *
  * @param {object} params

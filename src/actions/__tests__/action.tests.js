@@ -76,3 +76,27 @@ test('it should return userInfo request action', () => {
     'type': 'USER_INFO_REQUEST',
   })
 })
+
+test('it should return post delete request action', () => {
+  const params = {
+    postId: '23',
+    accessToken: '23dsadwewed',
+  }
+
+  expect(actions.commentDelete(params)).toEqual({
+    ...params,
+    'type': 'POST_DELETE_REQUEST',
+  })
+})
+
+test('it should return comment delete request action', () => {
+  const params = {
+    commentId: '23',
+    accessToken: '23dsadwewed',
+  }
+
+  expect(actions.commentDelete(params)).toEqual({
+    ...params,
+    'type': 'COMMENT_DELETE_REQUEST',
+  })
+})

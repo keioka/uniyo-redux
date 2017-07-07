@@ -1,6 +1,4 @@
 var debug = require('debug')('redux:cofig/path')
-const __STG__ = __STG__ || false
-const __PROD__ = __PROD__ || true
 
 let path
 if (__STG__) {

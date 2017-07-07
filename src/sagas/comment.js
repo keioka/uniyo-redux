@@ -22,7 +22,7 @@ export function* commentsSearchAsync({ postId, limit = 50, accessToken }) {
   }
 }
 
-export function* commentDeleteAsync({ accessToken, commentId }) {
+export function* commentDeleteAsync({ accessToken, commentId, postId }) {
   const params = converter.camelToSnakeCase({ accessToken })
 
   try {
@@ -32,6 +32,7 @@ export function* commentDeleteAsync({ accessToken, commentId }) {
 
     const data = Object.assign({}, result.data, {
       commentId,
+      postId,
     })
 
     yield put({ type: commentDelete.success, result: { data: converter.snakeToCamelCase(data) }  })

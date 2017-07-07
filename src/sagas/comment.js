@@ -22,16 +22,19 @@ export function* commentsSearchAsync({ postId, limit = 50, accessToken }) {
   }
 }
 
-export function* commentDeleteAsync({accessToken, commentId }) {
-  const params = {
-    accessToken,
-  }
+export function* commentDeleteAsync({ accessToken, commentId }) {
+  const params = converter.camelToSnakeCase({ accessToken })
 
   try {
     const result = yield api.delete(`comments/${commentId}`, {
-      params: converter.toFormUrlEncoded(params),
+      params,
     })
-    yield put({ type: commentDelete.success, result: converter.snakeToCamelCase(result) })
+
+    const data = Object.assign({}, result.data, {
+      commentId,
+    })
+
+    yield put({ type: commentDelete.success, result: { data: converter.snakeToCamelCase(data) }  })
   } catch (error) {
     yield put({ type: commentDelete.error, error })
   }
@@ -82,7 +85,7 @@ export function* commentsSearchSaga() {
   yield takeLatest(commentsSearch.request, commentsSearchAsync)
 }
 
-export function* commentDelete() {
+export function* commentDeleteSaga() {
   yield takeLatest(commentDelete.request, commentDeleteAsync)
 }
 

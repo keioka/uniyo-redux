@@ -152,16 +152,18 @@ export function* postsRelevantSearchAsync({ accessToken, limit = 10, types = nul
 
 export function* postDeleteAsync({ postId, accessToken }) {
 
-  const params = {
-    accessToken,
-  }
+  const params = converter.camelToSnakeCase({ accessToken })
 
   try {
     const result = yield api.delete(`posts/${postId}`, {
-      params: converter.toFormUrlEncoded(params),
+      params,
     })
 
-    yield put({ type: postDelete.success, result: converter.snakeToCamelCase(result) })
+    const data = Object.assign({}, result.data, {
+      postId,
+    })
+
+    yield put({ type: postDelete.success, result: { data: converter.snakeToCamelCase(data) } })
   } catch (error) {
     yield put({ type: postDelete.error, error })
   }

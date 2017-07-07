@@ -1,6 +1,7 @@
 import Immutable from 'seamless-immutable'
 import { actionTypes } from '../actions'
 import _ from 'lodash'
+import moment from 'moment'
 
 const initialState = Immutable({
   all: [],
@@ -58,6 +59,19 @@ const comments = (state = initialState, action) => {
     case actionTypes.commentCreate.error: {
       return Immutable(state).merge({
         error: action.error,
+      })
+    }
+
+    case actionTypes.commentDelete.success: {
+      const { commentId } = action.result.data
+      const nextAllComments = _.uniqBy(Immutable.asMutable([...state.all], { deep: true }), data => data.id)
+      const index = nextAllComments.findIndex(comment => comment.id === commentId)
+      if (index > -1) {
+        nextAllComments.splice(index, 1)
+      }
+
+      return Immutable(state).merge({
+        all: nextAllComments,
       })
     }
 

@@ -64,7 +64,7 @@ const posts = (state = initialState, action) => {
       const newPosts = _.uniqBy(Immutable.asMutable([...state.all, ...action.result.data], { deep: true }), data => data.id)
       newPosts.sort((a, b) => moment.utc(b.createdAt).diff(moment.utc(a.createdAt)))
       const nextAllPost = newPosts.filter(post => !trendingPostsId.includes(post.id) && !relevantPostsId.includes(post.id)).map(post => Object.assign(post, {
-        isRead: false,
+        isRead: true,
       }))
 
       return Immutable(state).merge({
@@ -161,6 +161,27 @@ const posts = (state = initialState, action) => {
         error: action.error,
       })
     }
+
+    case actionTypes.postDelete.success: {
+      const { postId } = action.result.data
+      const nextAllPosts = _.uniqBy(Immutable.asMutable([...state.all], { deep: true }), data => data.id)
+      nextAllPosts.sort((a, b) => moment.utc(b.createdAt).diff(moment.utc(a.createdAt)))
+      const index = nextAllPosts.findIndex(post => post.id === postId)
+      if (index > -1) {
+        nextAllPosts.splice(index, 1)
+      }
+
+      return Immutable(state).merge({
+        all: nextAllPosts,
+      })
+    }
+
+    case actionTypes.postDelete.error: {
+      return Immutable(state).merge({
+        error: action.error,
+      })
+    }
+
 
     /*
       postDonutsCountFetch

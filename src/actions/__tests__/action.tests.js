@@ -83,7 +83,7 @@ test('it should return post delete request action', () => {
     accessToken: '23dsadwewed',
   }
 
-  expect(actions.commentDelete(params)).toEqual({
+  expect(actions.postDelete(params)).toEqual({
     ...params,
     'type': 'POST_DELETE_REQUEST',
   })

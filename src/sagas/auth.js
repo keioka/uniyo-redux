@@ -2,7 +2,7 @@ import { put, call, takeLatest } from 'redux-saga/effects'
 import Fingerprint2 from 'fingerprintjs2'
 import UAParser from 'ua-parser-js'
 
-import { logIn, tokenRefresh, userCreate, currentUser, currentUserDonuts, addDevice, resetPassword, newPasswordUpdate } from '../actions/types'
+import { logIn, tokenRefresh, userCreate, currentUser, currentUserDonuts, addDevice, deleteDevice, resetPassword, newPasswordUpdate } from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
 const CLIENT_ID = 'qD1xzEFECX3JplYNIsmtFIb9lkdRF8XPuUR3jBR26cV0to5gnlKAYKc48PXJKpD'
@@ -155,21 +155,7 @@ function* newPasswordUpdateAsync({ password, passwordConfirmation, token }) {
 }
 
 
-function* addDeviceAsync({ deviceId, accessToken, endpoint, authSecret, p256dhKey }) {
-
-  const deviceTypeMapping = {
-    'Chrome': 'BROWSER_CHROME',
-    'Chromium': 'BROWSER_CHROME',
-    'Edge': 'BROWSER_EDGE',
-    'Firefox': 'BROWSER_FIREFOX',
-    'Safari': 'BROWSER_SAFARI'
-  }
-
-  const parser = new UAParser()
-
-  const browserName = parser.getBrowser().name
-  const deviceType = deviceTypeMapping[browserName]
-   ? deviceTypeMapping[browserName] : 'BROWSER_OTHER'
+function* addDeviceAsync({ deviceId, deviceType, accessToken, endpoint, authSecret, p256dhKey }) {
 
   const params = {
     deviceId,
@@ -192,6 +178,25 @@ function* addDeviceAsync({ deviceId, accessToken, endpoint, authSecret, p256dhKe
   }
 }
 
+function* deleteDeviceAsync({ deviceType, deviceId, accessToken }) {
+  const params = {
+    deviceId,
+    deviceType,
+    accessToken,
+  }
+
+  const body = converter.toFormUrlEncoded(params)
+
+  try {
+    const result = yield api.delete('users/me/devices', {
+      data: body,
+    })
+    yield put({ type: deleteDevice.success, result: converter.snakeToCamelCase(result) })
+  } catch (error) {
+    yield put({ type: deleteDevice.error, error })
+  }
+}
+
 export function* logInSaga() {
   yield takeLatest(logIn.request, logInAsync)
 }
@@ -210,6 +215,10 @@ export function* currentUserSaga() {
 
 export function* addDeviceSaga() {
   yield takeLatest(addDevice.request, addDeviceAsync)
+}
+
+export function* deleteDeviceSaga() {
+  yield takeLatest(deleteDevice.request, deleteDeviceAsync)
 }
 
 export function* resetPasswordSaga() {

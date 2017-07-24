@@ -13,7 +13,7 @@ export function* userInfoAsync({ userId, accessToken }) {
       params: converter.camelToSnakeCase(params),
     })
 
-    yield put({ type: userInfo.success, result: converter.snakeToCamelCase(result) })
+    yield put({ type: userInfo.success, payload: converter.snakeToCamelCase(result.data) })
     return converter.snakeToCamelCase(result.data)
   } catch (error) {
     yield put({ type: userInfo.error, error })
@@ -30,7 +30,7 @@ export function* userSearchAsync({ query, accessToken }) {
       params: converter.camelToSnakeCase(params),
     })
 
-    yield put({ type: userSearch.success, result: converter.snakeToCamelCase(result) })
+    yield put({ type: userSearch.success, payload: converter.snakeToCamelCase(result.data) })
     return converter.snakeToCamelCase(result.data)
   } catch (error) {
     yield put({ type: userSearch.error, error })

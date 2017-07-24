@@ -20,9 +20,7 @@ describe('channels reducer', () => {
     expect(
       reducer(undefined, {
         type: types.channelSearch.success,
-        result: {
-          data: response.channelSearch,
-        }
+        payload: response.channelSearch,
       })
     ).toEqual({ all: response.channelSearch, error: {}, fetching: false })
   })

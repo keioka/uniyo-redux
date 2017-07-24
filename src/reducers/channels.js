@@ -24,7 +24,7 @@ const channels = (state = initialState, action) => {
 
     case actionTypes.channelSearch.success: {
       return Immutable(state).merge({
-        all: action.result.data,
+        all: action.payload,
         fetching: false,
       })
     }
@@ -43,7 +43,7 @@ const channels = (state = initialState, action) => {
 
     case actionTypes.channelCreate.success: {
       return Immutable(state).merge({
-        all: _.uniqBy([...state.all, action.result.data], data => data.id),
+        all: _.uniqBy([...state.all, ...action.payload], data => data.id),
       })
     }
 

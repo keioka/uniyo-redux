@@ -25,7 +25,7 @@ const users = (state = initialState, action) => {
 
     case actionTypes.userInfo.success: {
       return Immutable(state).merge({
-        all: _.uniqBy([...state.all, action.result.data], data => data.id),
+        all: _.uniqBy([...state.all, action.payload], data => data.id),
         fetching: false,
       })
     }
@@ -45,8 +45,8 @@ const users = (state = initialState, action) => {
 
     case actionTypes.userSearch.success: {
       return Immutable(state).merge({
-        all: _.uniqBy([...state.all, ...action.result.data], data => data.id),
-        search: [...action.result.data],
+        all: _.uniqBy([...state.all, ...action.payload], data => data.id),
+        search: [...action.payload],
         fetching: false,
       })
     }

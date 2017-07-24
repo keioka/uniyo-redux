@@ -78,7 +78,6 @@ const users = (state = initialState, action) => {
     // }
 
     case actionTypes.otherUserReceivedDonutsFetch.success: {
-      console.log(action)
       const { toUser } = action.result.data
       const userId = toUser.id
 

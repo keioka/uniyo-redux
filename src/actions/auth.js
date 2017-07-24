@@ -159,3 +159,8 @@ export const addDevice = params => ({
   type: actionTypes.addDevice.request,
   ...params,
 })
+
+export const deleteDevice = params => ({
+  type: actionTypes.deleteDevice.request,
+  ...params,
+})

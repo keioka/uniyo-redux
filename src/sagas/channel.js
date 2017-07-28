@@ -34,20 +34,27 @@ export function* channelSearchAsync({ accessToken }) {
 }
 
 export function* channelCreateAsync({
-  name = null,
-  description = null,
+  name,
+  description,
   accessToken,
   isPrivate = true,
   users,
   channel_type = "PRIVATE_CHAT"
 }) {
+
   const params = {
-    name,
-    description,
     accessToken,
     isPrivate,
     users,
     type: channel_type,
+  }
+
+  if (name) {
+    params.name = name
+  }
+
+  if (description) {
+    params.description = description
   }
 
   const snakeCaseParams = converter.toFormUrlEncoded(params)

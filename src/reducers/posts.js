@@ -32,7 +32,7 @@ const posts = (state = initialState, action) => {
     }
 
     case actionTypes.postInfo.success: {
-      
+
       const newPosts = _.uniqBy(Immutable.asMutable([...state.all, action.result.data], { deep: true }), data => data.id)
       newPosts.sort((a, b) => moment.utc(b.createdAt).diff(moment.utc(a.createdAt)))
       return Immutable(state).merge({

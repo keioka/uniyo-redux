@@ -34,8 +34,8 @@ export function* channelSearchAsync({ accessToken }) {
 }
 
 export function* channelCreateAsync({
-  name,
-  description,
+  name = null,
+  description = null,
   accessToken,
   isPrivate = true,
   users,

@@ -8,6 +8,7 @@ const initialState = Immutable({
   unReadChannelIds: [],
   error: {},
   fetching: false,
+  isSendingNotificationReadMark: false,
 })
 
 
@@ -85,26 +86,29 @@ const notifications = (state = initialState, action) => {
 
     case actionTypes.notificationReadMark.request: {
       return Immutable(state).merge({
+        isSendingNotificationReadMark: true,
       })
     }
 
     case actionTypes.notificationReadMark.success: {
       const { notificationId } = action.result.data
-
-      const nextNotifications = Immutable.asMutable([ ...state.all ], { deep: true })
+      const notificationIds = notificationId.split(',').map(id => parseInt(id))
+      const nextNotifications = [ ...state.all ]
       const nextUnReadPostIds = Immutable.asMutable([ ...state.unReadPostIds ], { deep: true })
       const nextUnReadChannelIds = Immutable.asMutable([ ...state.unReadChannelIds ], { deep: true })
-
-      nextNotifications.forEach(notification => {
-        if (notification.id === notificationId) {
-          notification.isRead = true
-        }
-      })
-
+      //
+      // nextNotifications.forEach(notification => {
+      //   if (notificationIds.includes(notification.id)) {
+      //     notification.isRead = true
+      //   }
+      // })
       return Immutable(state).merge({
-        all: nextNotifications,
-        unReadPostIds: nextUnReadPostIds.filter(ids => notificationId !== ids.notificationId),
-        unReadChannelIds: nextUnReadChannelIds.filter(ids => notificationId !== ids.notificationId),
+        all: nextNotifications.map(function(notification, index) {
+          return (notificationIds.includes(notification.id)) ? Immutable.set(notification, 'isRead', true) : notification
+        }),
+        unReadPostIds: nextUnReadPostIds.filter(ids => !notificationIds.includes(ids.notificationId)),
+        unReadChannelIds: nextUnReadChannelIds.filter(ids => !notificationIds.includes(ids.notificationId)),
+        isSendingNotificationReadMark: false,
       })
     }
 

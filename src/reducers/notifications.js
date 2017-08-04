@@ -96,12 +96,7 @@ const notifications = (state = initialState, action) => {
       const nextNotifications = [ ...state.all ]
       const nextUnReadPostIds = Immutable.asMutable([ ...state.unReadPostIds ], { deep: true })
       const nextUnReadChannelIds = Immutable.asMutable([ ...state.unReadChannelIds ], { deep: true })
-      //
-      // nextNotifications.forEach(notification => {
-      //   if (notificationIds.includes(notification.id)) {
-      //     notification.isRead = true
-      //   }
-      // })
+
       return Immutable(state).merge({
         all: nextNotifications.map(function(notification, index) {
           return (notificationIds.includes(notification.id)) ? Immutable.set(notification, 'isRead', true) : notification
@@ -115,6 +110,7 @@ const notifications = (state = initialState, action) => {
     case actionTypes.notificationReadMark.error: {
       return Immutable(state).merge({
         error: action.error,
+        isSendingNotificationReadMark: false,
       })
     }
 

@@ -25,7 +25,7 @@ const messages = (state = initialState, action) => {
 
     case actionTypes.messageSearch.success: {
       const newMessages = _.uniqBy(Immutable.asMutable([...state.all, ...action.result.data], { deep: true }), data => data.id)
-      newMessages.sort((a, b) => moment.utc(a.createdAt).diff(moment.utc(b.createdAt)))
+      newMessages.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))
       return Immutable(state).merge({
         all: newMessages,
         fetching: false,
@@ -42,7 +42,7 @@ const messages = (state = initialState, action) => {
     // Used for new message comming through webSocket
     case actionTypes.messageFetch.success: {
       const newMessages = _.uniqBy(Immutable.asMutable([...state.all, action.result.data], { deep: true }), data => data.id)
-      newMessages.sort((a, b) => moment.utc(a.createdAt).diff(moment.utc(b.createdAt)))
+      newMessages.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))
       return Immutable(state).merge({
         all: newMessages,
         fetching: false,
@@ -56,7 +56,7 @@ const messages = (state = initialState, action) => {
 
     case actionTypes.messageCreate.success: {
       const newMessages = _.uniqBy(Immutable.asMutable([...state.all, action.result.data], { deep: true }), data => data.id)
-      newMessages.sort((a, b) => moment.utc(a.createdAt).diff(moment.utc(b.createdAt)))
+      newMessages.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))
       return Immutable(state).merge({
         all: newMessages,
         fetching: false,

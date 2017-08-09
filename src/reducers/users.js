@@ -24,8 +24,10 @@ const users = (state = initialState, action) => {
     }
 
     case actionTypes.userInfo.success: {
+      const user = action.payload
+      user.isOnline = true
       return Immutable(state).merge({
-        all: _.uniqBy([...state.all, action.payload], data => data.id),
+        all: _.uniqBy([...state.all, user], data => data.id),
         fetching: false,
       })
     }
@@ -44,8 +46,9 @@ const users = (state = initialState, action) => {
     }
 
     case actionTypes.userSearch.success: {
+      const users = action.payload.map(user => Object.assign({}, user, { isOnline: false }))
       return Immutable(state).merge({
-        all: _.uniqBy([...state.all, ...action.payload], data => data.id),
+        all: _.uniqBy([...state.all, ...users], data => data.id),
         search: [...action.payload],
         fetching: false,
       })
@@ -57,6 +60,23 @@ const users = (state = initialState, action) => {
         fetching: false,
       })
     }
+
+   case actionTypes.userOnlineStatusUpdate.success: {
+     const usersOnlineStatus = action.payload
+     const statusObject = {}
+     usersOnlineStatus.forEach(userStatus => {
+       statusObject[userStatus.userId] = userStatus.status === 'ONLINE'
+     })
+     const nextAllUsers = state.all.map(user => {
+       const newStatus = statusObject[user.id]
+       const currentStatus = user.isOnline
+       return Immutable.set(user, 'isOnline', (typeof statusObject[user.id] === "undefined") ? currentStatus : newStatus)
+     })
+     return Immutable(state).merge({
+       all: nextAllUsers,
+       fetching: false,
+     })
+   }
 
     // case actionTypes.userGiveDonuts.success: {
     //   const { userId, amount } = action.result.data

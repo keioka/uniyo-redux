@@ -167,7 +167,7 @@ function* addDeviceAsync({ deviceId, deviceType, accessToken, endpoint, authSecr
   }
 
   const body = converter.toFormUrlEncoded(params)
-
+  const deleteDevice = yield call(deleteDeviceAsync, { deviceType, deviceId, accessToken })
   try {
     const result = yield api.post('users/me/devices', {
       data: body,
@@ -180,20 +180,18 @@ function* addDeviceAsync({ deviceId, deviceType, accessToken, endpoint, authSecr
 
 function* deleteDeviceAsync({ deviceType, deviceId, accessToken }) {
   const params = {
-    deviceId,
-    deviceType,
     accessToken,
   }
 
-  const body = converter.toFormUrlEncoded(params)
-
   try {
-    const result = yield api.delete('users/me/devices', {
-      data: body,
+    const result = yield api.delete(`users/me/devices/${deviceType}/${deviceId}`, {
+      params: converter.camelToSnakeCase(params),
     })
     yield put({ type: deleteDevice.success, result: converter.snakeToCamelCase(result) })
+    return true
   } catch (error) {
     yield put({ type: deleteDevice.error, error })
+    return false
   }
 }
 

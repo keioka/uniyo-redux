@@ -92,7 +92,8 @@ const notifications = (state = initialState, action) => {
 
     case actionTypes.notificationReadMark.success: {
       const { notificationId } = action.result.data
-      const notificationIds = notificationId.split(',').map(id => parseInt(id))
+      console.log(notificationId)
+      const notificationIds = notificationId && (typeof notificationId === "string" ? notificationId.split(',').map(id => parseInt(id)) : [notificationId])
       const nextNotifications = [ ...state.all ]
       const nextUnReadPostIds = Immutable.asMutable([ ...state.unReadPostIds ], { deep: true })
       const nextUnReadChannelIds = Immutable.asMutable([ ...state.unReadChannelIds ], { deep: true })

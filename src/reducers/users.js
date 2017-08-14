@@ -24,10 +24,23 @@ const users = (state = initialState, action) => {
     }
 
     case actionTypes.userInfo.success: {
-      const user = action.payload
-      user.isOnline = true
+      const nextUser = action.payload
+      const index = state.all.findIndex(user => user.id === nextUser.id)
+      let nextAllUsers
+      if (index > 0) {
+        nextAllUsers = state.all.map((user, userIndex) => {
+          if (index === userIndex) {
+            return Immutable.merge(user, nextUser)
+          }
+          return user
+        })
+      } else {
+        nextUser.isOnline = false
+        nextAllUsers = _.uniqBy([...state.all, nextUser], data => data.id)
+      }
+
       return Immutable(state).merge({
-        all: _.uniqBy([...state.all, user], data => data.id),
+        all: nextAllUsers,
         fetching: false,
       })
     }

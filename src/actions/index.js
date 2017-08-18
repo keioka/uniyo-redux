@@ -10,6 +10,7 @@ import * as channelActions from './channel'
 import * as hashtagActions from './hashtag'
 import * as answerActions from './answer'
 import * as notificationActions from './notification'
+import * as shareActions from './share'
 
 export default {
   ...authActions,
@@ -22,6 +23,7 @@ export default {
   ...hashtagActions,
   ...answerActions,
   ...notificationActions,
+  ...shareActions,
 }
 
 export { actionTypes }

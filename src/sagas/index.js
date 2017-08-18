@@ -8,6 +8,7 @@ import * as messageSagas from './message'
 import * as channelSagas from './channel'
 import * as hashtagSagas from './hashtag'
 import * as notificationSagas from './notification'
+import * as shareSagas from './share'
 
 export default {
   ...schoolSagas,
@@ -20,4 +21,5 @@ export default {
   ...channelSagas,
   ...hashtagSagas,
   ...notificationSagas,
+  ...shareSagas,
 }

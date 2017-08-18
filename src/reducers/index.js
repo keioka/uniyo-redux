@@ -9,6 +9,7 @@ import messages from './messages'
 import hashtags from './hashtags'
 import answers from './answers'
 import notifications from './notifications'
+import share from './share'
 
 export default combineReducers({
   schools,
@@ -21,5 +22,6 @@ export default combineReducers({
   hashtags,
   answers,
   notifications,
+  share,
   // more later
 })

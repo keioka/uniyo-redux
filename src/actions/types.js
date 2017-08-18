@@ -40,6 +40,7 @@ export const postCreate = actionCreator('POST_CREATE')
 export const postDelete = actionCreator('POST_DELETE')
 export const postsTrendingSearch = actionCreator('POSTS_TRENDING_SEARCH')
 export const postsRelevantSearch = actionCreator('POSTS_RELEVANT_SEARCH')
+export const sharePostFetch = actionCreator('SHARE_POST_FETCH')
 
 export const postGiveDonuts = actionCreator('POST_GIVE_DONUTS')
 export const postDonutsCountFetch = actionCreator('POST_DONUTS_COUNT_FETCH')

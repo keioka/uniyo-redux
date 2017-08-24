@@ -325,11 +325,17 @@ const posts = (state = initialState, action) => {
     }
 
     case actionTypes.answerCreate.success: {
-      const newPosts = _.uniqBy(Immutable.asMutable([...state.all, action.result.data], { deep: true }), data => data.id)
-      newPosts.sort((a, b) => moment.utc(b.createdAt).diff(moment.utc(a.createdAt)))
+      const questionId = parseInt(action.result.data.questionId)
+      nextPosts = _.uniqBy(Immutable.asMutable([...state.all, action.result.data], { deep: true }), data => data.id)
+      nextPosts.sort((a, b) => moment.utc(b.createdAt).diff(moment.utc(a.createdAt)))
+      nextPosts.forEach(post => {
+        if (post.id === questionId) {
+          post.answersCount += 1
+        }
+      })
 
       return Immutable(state).merge({
-        all: newPosts,
+        all: nextPosts,
         fetching: false,
       })
     }

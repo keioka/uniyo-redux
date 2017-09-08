@@ -83,7 +83,7 @@ const users = (state = initialState, action) => {
     case actionTypes.userAll.success: {
       const users = action.payload
       const previousAllUsers = state.all
-      const nextAllUsers = _.unionBy([...users], [...previousAllUsers], 'id')
+      const nextAllUsers = _.unionBy([...previousAllUsers], [...users], 'id')
       return Immutable(state).merge({
         all: nextAllUsers.map(user => user.isOnline ? user : Object.assign({}, user, { isOnline: false })),
         search: [...action.payload],

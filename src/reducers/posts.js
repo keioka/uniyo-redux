@@ -326,7 +326,7 @@ const posts = (state = initialState, action) => {
 
     case actionTypes.answerCreate.success: {
       const questionId = parseInt(action.result.data.questionId)
-      nextPosts = _.uniqBy(Immutable.asMutable([...state.all, action.result.data], { deep: true }), data => data.id)
+      const nextPosts = _.uniqBy(Immutable.asMutable([...state.all, action.result.data], { deep: true }), data => data.id)
       nextPosts.sort((a, b) => moment.utc(b.createdAt).diff(moment.utc(a.createdAt)))
       nextPosts.forEach(post => {
         if (post.id === questionId) {

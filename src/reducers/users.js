@@ -80,7 +80,7 @@ const users = (state = initialState, action) => {
       })
     }
 
-    case actionTypes.userALL.request: {
+    case actionTypes.userAll.success: {
       const users = action.payload
       const previousAllUsers = state.all
       const nextAllUsers = _.unionBy([...users], [...previousAllUsers], 'id')

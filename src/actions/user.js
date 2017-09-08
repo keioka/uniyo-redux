@@ -10,6 +10,11 @@ export const userSearch = params => ({
   ...params,
 })
 
+export const userAll = params => ({
+  type: actionTypes.userAll.request,
+  ...params,
+})
+
 export const userGiveDonuts = params => ({
   type: actionTypes.userGiveDonuts.request,
   ...params,

@@ -20,6 +20,7 @@ export const schoolsSearch = actionCreator('SCHOOLS_SEARCH')
 
 export const userInfo = actionCreator('USER_INFO')
 export const userUpdate = actionCreator('USER_UPDATE')
+export const userAll = actionCreator('USER_ALL')
 export const userSearch = actionCreator('USER_SEARCH')
 export const userPictureUpdate = actionCreator('USER_PICTURE_UPDATE')
 export const userGiveDonuts = actionCreator('USER_GIVE_DONUTS')

@@ -3,7 +3,9 @@ import config from '../config'
 
 const methods = {
   get: {
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+    },
   },
   post: {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

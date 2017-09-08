@@ -80,6 +80,17 @@ const users = (state = initialState, action) => {
       })
     }
 
+    case actionTypes.userALL.request: {
+      const users = action.payload
+      const previousAllUsers = state.all
+      const nextAllUsers = _.unionBy([...users], [...previousAllUsers], 'id')
+      return Immutable(state).merge({
+        all: nextAllUsers.map(user => user.isOnline ? user : Object.assign({}, user, { isOnline: false })),
+        search: [...action.payload],
+        fetching: false,
+      })
+    }
+
    case actionTypes.userOnlineStatusUpdate.success: {
      const usersOnlineStatus = action.payload
      const statusObject = {}

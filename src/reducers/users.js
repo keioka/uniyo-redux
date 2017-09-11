@@ -27,7 +27,7 @@ const users = (state = initialState, action) => {
       const nextUser = action.payload
       const index = state.all.findIndex(user => user.id === nextUser.id)
       let nextAllUsers
-      if (index > 0) {
+      if (index >= 0) {
         nextAllUsers = state.all.map((user, userIndex) => {
           if (index === userIndex) {
             return Immutable.merge(user, nextUser)
@@ -83,7 +83,7 @@ const users = (state = initialState, action) => {
     case actionTypes.userAll.success: {
       const users = action.payload
       const previousAllUsers = state.all
-      const nextAllUsers = _.unionBy([...previousAllUsers], [...users], 'id')
+      const nextAllUsers = _.unionBy([...users], [...previousAllUsers], 'id')
       return Immutable(state).merge({
         all: nextAllUsers.map(user => user.isOnline ? user : Object.assign({}, user, { isOnline: false })),
         search: [...action.payload],

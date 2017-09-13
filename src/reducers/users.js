@@ -7,6 +7,7 @@ const initialState = Immutable({
   all: [],
   search: [],
   error: {},
+  currentUserAllPage: 0,
 })
 
 /**
@@ -88,6 +89,7 @@ const users = (state = initialState, action) => {
         all: nextAllUsers.map(user => user.isOnline ? user : Object.assign({}, user, { isOnline: false })),
         search: [...action.payload],
         fetching: false,
+        currentUserAllPage: state.currentUserAllPage + 1,
       })
     }
 

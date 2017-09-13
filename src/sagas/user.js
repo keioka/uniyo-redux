@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects'
+import { put, takeLatest, select } from 'redux-saga/effects'
 import { userInfo, userSearch, userAll, userGiveDonuts } from '../actions/types'
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
@@ -37,12 +37,16 @@ export function* userSearchAsync({ query, accessToken }) {
   }
 }
 
-export function* userAllAsync({ limit = 0, offset = 0, accessToken }) {
+export function* userAllAsync({ limit = 50, accessToken }) {
+  const page = yield select(state => state.api.users.currentUserAllPage)
+  const offset = (limit * page) + 1
+
   const params = {
     limit,
     offset,
     accessToken,
   }
+
   try {
     const result = yield api.get(`users`, {
       params: converter.camelToSnakeCase(params),

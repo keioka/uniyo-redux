@@ -80,12 +80,13 @@ export function* postGiveDonutsAsync({ accessToken, amount, postId }) {
   }
 }
 
-export function* postCreateAsync({ text, accessToken, postType = 'POST', rating = null, classNote = null }) {
+export function* postCreateAsync({ text, accessToken, postType = 'POST', rating = null, classNote = null, embeds }) {
 
   const params = {
     type: postType,
     accessToken,
-    text
+    text,
+    ...embeds,
   }
 
   if (rating) params['rating'] = rating

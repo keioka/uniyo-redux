@@ -100,6 +100,17 @@ export const newPasswordUpdate = (params) => ({
   ...params,
 })
 
+/**
+ * Requests resendVerificationEmail
+ *
+ * @param {string} params
+ * @returns {object} action
+ */
+
+export const resendVerificationEmail = (params) => ({
+  type: actionTypes.resendVerificationEmail.request,
+  ...params,
+})
 
 /**
  * Requests new Tokens by refresh token

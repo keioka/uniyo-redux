@@ -1,8 +1,20 @@
-import { put, call, takeLatest } from 'redux-saga/effects'
+import { put, call, takeLatest, select } from 'redux-saga/effects'
 import Fingerprint2 from 'fingerprintjs2'
 import UAParser from 'ua-parser-js'
 
-import { logIn, tokenRefresh, userCreate, currentUser, currentUserDonuts, addDevice, deleteDevice, resetPassword, newPasswordUpdate } from '../actions/types'
+import {
+  logIn,
+  tokenRefresh,
+  userCreate,
+  currentUser,
+  currentUserDonuts,
+  addDevice,
+  deleteDevice,
+  resetPassword,
+  newPasswordUpdate,
+  resendVerificationEmail,
+} from '../actions/types'
+
 import * as converter from '../helpers/converter'
 import api from '../helpers/api'
 const CLIENT_ID = 'qD1xzEFECX3JplYNIsmtFIb9lkdRF8XPuUR3jBR26cV0to5gnlKAYKc48PXJKpD'
@@ -154,6 +166,34 @@ function* newPasswordUpdateAsync({ password, passwordConfirmation, token }) {
   }
 }
 
+function* resendVerificationEmailAsync() {
+  const accessToken = yield select(state => state.api.auth.token.accessToken)
+  const path = 'users/me/resend_email_verification_email'
+
+  const params = {
+    accessToken,
+  }
+
+  const snakeCaseParams = converter.camelToSnakeCase(params)
+
+  // generate form data
+  // const body = new FormData()
+  //
+  // // append all snake case params to body
+  // Object.keys(snakeCaseParams).forEach(key => body.append(key, snakeCaseParams[key]))
+
+  try {
+    const result = yield api.post(path, {
+      params: snakeCaseParams,
+    })
+
+    yield put({ type: resendVerificationEmail.success })
+  } catch (error) {
+    console.log(error)
+    yield put({ type: resendVerificationEmail.error, error })
+  }
+}
+
 
 function* addDeviceAsync({ deviceId, deviceType, accessToken, endpoint, authSecret, p256dhKey }) {
 
@@ -225,6 +265,10 @@ export function* resetPasswordSaga() {
 
 export function* newPasswordUpdateSaga() {
   yield takeLatest(newPasswordUpdate.request, newPasswordUpdateAsync)
+}
+
+export function* resendVerificationEmailSaga() {
+  yield takeLatest(resendVerificationEmail.request, resendVerificationEmailAsync)
 }
 
 export function* currentUserDonutsSaga() {

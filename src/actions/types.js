@@ -15,6 +15,7 @@ export const addDevice = actionCreator('ADD_DEVICE')
 export const deleteDevice = actionCreator('DELETE_DEVICE')
 export const resetPassword = actionCreator('RESET_PASSWORD')
 export const newPasswordUpdate = actionCreator('NEW_PASSWORD_UPDATE')
+export const resendVerificationEmail = actionCreator('RESEND_VERIFICATION_EMAIL')
 export const schoolInfo = actionCreator('SCHOOL_INFO')
 export const schoolsSearch = actionCreator('SCHOOLS_SEARCH')
 
